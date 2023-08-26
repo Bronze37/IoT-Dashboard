@@ -1,0 +1,69 @@
+import React from 'react';
+import Clock from '../components/Clock';
+import avt from '../img/avt.jpg';
+
+const Profile = () => {
+    return (
+        <div>
+            <strong className="h-[90px] border-b mr-[100px] flex justify-start items-center">
+                <div>PROFILE</div>
+                <Clock />
+            </strong>
+            <hr className="mr-[100px]" />
+
+            <section className="pt-16 mr-[100px]">
+                <div className="w-full lg:w-4/12 px-4 mx-auto">
+                    <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
+                        <div className="px-6">
+                            <div className="flex flex-wrap justify-center">
+                                <div className="w-full px-4 flex justify-center">
+                                    <div className="relative">
+                                        <img
+                                            alt="..."
+                                            src={avt}
+                                            className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="w-full px-4 text-center mt-20"></div>
+                            </div>
+                            <div className="text-center mt-12">
+                                <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700">
+                                    Bùi Văn Huy <br />
+                                    <span className="text-[15px]">
+                                        B20DCCN306
+                                    </span>
+                                </h3>
+
+                                <div className="mb-2 text-blueGray-600 mt-10">
+                                    <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
+                                    Công nghệ thông tin
+                                </div>
+                                <div className="mb-2 text-blueGray-600">
+                                    <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
+                                    Học viện Công nghệ Bưu chính Viễn thông
+                                </div>
+                            </div>
+                            <div className="flex flex-col justify-start  mt-10 py-10 border-t border-blueGray-200 text-center">
+                                <div className="flex justify-center">
+                                    <div className="w-full lg:w-9/12 px-4">
+                                        <i className="fa fa-envelope mr-2 text-lg text-blueGray-400"></i>
+                                        bvhuy120202@gmail.com
+                                    </div>
+                                </div>
+                                <div className="flex justify-center ml-[-100px]">
+                                    <div className="w-full lg:w-9/12 px-4">
+                                        <i className="fa fa-phone-square mr-2 text-lg text-blueGray-400"></i>
+                                        0327971563
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
+
+export default Profile;
