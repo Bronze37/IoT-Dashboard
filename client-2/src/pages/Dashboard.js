@@ -2,7 +2,7 @@ import React from 'react';
 import Cards from '../components/Cards';
 import Clock from '../components/Clock';
 import Led from '../components/Led';
-import Chart from '../components/Chart';
+import ChartE from '../components/ChartE';
 
 const Dashboard = () => {
     return (
@@ -16,9 +16,9 @@ const Dashboard = () => {
                 <Cards />
             </div>
 
-            <div className="mt-[40px] mr-[120px] flex justify-around">
+            <div className="mt-[40px] mr-[120px] flex justify-around items-center">
                 <div className="w-[70%]">
-                    <Chart />
+                    <ChartE />
                 </div>
                 <div className="w-[30%]">
                     <Led />
