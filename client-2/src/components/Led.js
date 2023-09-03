@@ -21,12 +21,12 @@ const Led = () => {
             <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedLight ? (
                     <img
-                        src={Led_on}
+                        src='https://webvn.com/wp-content/uploads/2015/08/pic_bulbon.gif'
                         className="object-contain h-[90px] mr-[-50px]"
                     />
                 ) : (
                     <img
-                        src={Led_off}
+                        src='https://www.w3schools.com/js/pic_bulboff.gif'
                         className="object-contain h-[90px] mr-[-50px]"
                     />
                 )}

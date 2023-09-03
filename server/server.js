@@ -67,6 +67,8 @@ client.on('message', function (topic, message) {
     io.emit('light', light_data);
     io.emit('relay_1', state_1);
     io.emit('relay_2', state_2);
+
+    // console.log(io)
 });
 
 io.on('connection', function (socket) {

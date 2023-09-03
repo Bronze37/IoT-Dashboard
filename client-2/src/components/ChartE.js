@@ -1,34 +1,55 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Chart } from 'chart.js';
+import React, { useEffect, useState } from 'react';
+import Chart from 'chart.js/auto';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8688');
-
 const ChartE = () => {
-    const [temperature, setTemperature] = useState(null);
-    const [humi, setHumi] = useState(null);
-    const [light, setLight] = useState(null);
-
-    useEffect(() => {
-        socket.on('temp', (data) => {
-            setTemperature(data);
-        });
-        socket.on('humi', (data) => {
-            setHumi(data);
-        });
-        socket.on('light', (data) => {
-            setLight(data);
-        });
-    }, []);
+    const updatee = new Chart('myChart', {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Nhiệt độ',
+                    lineTension: 0.3,
+                    backgroundColor: 'red', // màu các điểm
+                    borderColor: 'red', //màu đường kẻ
+                    data: [],
+                },
+                {
+                    label: 'Độ ẩm',
+                    lineTension: 0.3,
+                    backgroundColor: 'blue',
+                    borderColor: 'blue',
+                    data: [],
+                },
+                {
+                    label: 'Ánh sáng',
+                    lineTension: 0.3,
+                    backgroundColor: 'yellow',
+                    borderColor: 'yellow',
+                    data: [],
+                },
+            ],
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Hệ thống IoT lắp đặt tại Học viện Công nghệ Bưu chính Viễn thông',
+                    },
+                },
+            },
+        },
+    });
 
     return (
         <div className="border rounded-lg mr-11 ml-[15px]">
-            <div>
-                <canvas
-                    className="border rounded-lg h-[100%] w-[100%]"
-                    id="myChart"
-                ></canvas>
-            </div>
+            <canvas
+                class="border  rounded"
+                id="myChart"
+                style="max-height: 800px; width: 100%; background-color: white;"
+            ></canvas>
         </div>
     );
 };
