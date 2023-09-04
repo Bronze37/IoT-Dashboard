@@ -1,11 +1,35 @@
-import React from 'react';
-import { Cards, DataProvider } from '../components/Cards';
+import React, { useState } from 'react';
+import Cards from '../components/Cards';
 import Clock from '../components/Clock';
 import Led from '../components/Led';
-import ChartE from '../components/ChartE';
 import DataChart from '../components/DataChart';
 
-const Dashboard = () => {
+const Dashboard = ({
+    temp,
+    setTemp,
+    humi,
+    setHumi,
+    light,
+    setLight,
+    label,
+    setLabel,
+    tempCard,
+    setTempCard,
+    humiCard,
+    setHumiCard,
+    lightCard,
+    setLightCard,
+    bgHumi,
+    setBgHumi,
+    bgTemp,
+    setBgTemp,
+    bgLight,
+    setBgLight,
+    isCheckedLight,
+    setIsCheckedLight,
+    isCheckedFan,
+    setIsCheckedFan,
+}) => {
     return (
         <div>
             <strong className="h-[90px] border-b mr-[100px] flex justify-start items-center">
@@ -13,18 +37,44 @@ const Dashboard = () => {
                 <Clock />
             </strong>
             <hr className="mr-[100px]" />
-            <DataProvider>
-                <div className="mr-[100px] mt-10">
-                    <Cards />
-                </div>
-            </DataProvider>
+
+            <div className="mr-[100px] mt-10">
+                <Cards
+                    tempCard={tempCard}
+                    setTempCard={setTempCard}
+                    humiCard={humiCard}
+                    setHumiCard={setHumiCard}
+                    lightCard={lightCard}
+                    setLightCard={setLightCard}
+                    bgHumi={bgHumi}
+                    setBgHumi={setBgHumi}
+                    bgTemp={bgTemp}
+                    setBgTemp={setBgTemp}
+                    bgLight={bgLight}
+                    setBgLight={setBgLight}
+                />
+            </div>
 
             <div className="mt-[40px] mr-[120px] flex justify-around items-center">
                 <div className="w-[70%]">
-                    <DataChart />
+                    <DataChart
+                        temp={temp}
+                        setTemp={setTemp}
+                        humi={humi}
+                        setHumi={setHumi}
+                        light={light}
+                        setLight={setLight}
+                        label={label}
+                        setLabel={setLabel}
+                    />
                 </div>
                 <div className="w-[30%]">
-                    <Led />
+                    <Led
+                        isCheckedLight={isCheckedLight}
+                        setIsCheckedLight={setIsCheckedLight}
+                        isCheckedFan={isCheckedFan}
+                        setIsCheckedFan={setIsCheckedFan}
+                    />
                 </div>
             </div>
         </div>

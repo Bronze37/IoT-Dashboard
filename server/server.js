@@ -4,6 +4,8 @@ const app = express();
 const port = 8688;
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mysql = require('mysql2'); 
+
 const dbConn = require('./config/dbConn');
 
 app.use(cors());
@@ -22,7 +24,7 @@ const io = require('socket.io')(server, {
 server.listen(port);
 
 ////////MQTT///
-var client = mqtt.connect('mqtt://192.168.9.106');
+var client = mqtt.connect('mqtt://192.168.1.5');
 client.on('connect', function () {
     console.log('mqtt connected');
     client.subscribe('sensor'); //phần cứng gửi dữ liệu lên, bên này sub vào kênh sensor
@@ -38,9 +40,7 @@ client.on('message', function (topic, message) {
     var humi_data = data.humidity;
     var light_data = Math.floor(Math.round(12000 / data.light));
 
-    console.log(message);
-
-    //cho giá trị vào bảng data trên xampp
+    //cho giá trị vào bảng data trên mysql
     var sql =
         'insert into sensordata(temp,humi,light) value ( ' +
         temp_data +
@@ -68,7 +68,7 @@ client.on('message', function (topic, message) {
     io.emit('relay_1', state_1);
     io.emit('relay_2', state_2);
 
-    // console.log(io)
+    console.log(state_1, state_2);
 });
 
 io.on('connection', function (socket) {
@@ -93,12 +93,12 @@ io.on('connection', function (socket) {
         if (state2 == '1') {
             client.publish('relay_2', '1');
             dbConn.query(
-                "insert into relays(relay_id, state) value ( 'relay_2' , 'ON') ",
+                "insert into relay(relay_id, state) value ( 'relay_2' , 'ON') ",
             );
         } else {
             client.publish('relay_2', '0');
             dbConn.query(
-                "insert into relays(relay_id, state) value ( 'relay_2' , 'OFF') ",
+                "insert into relay(relay_id, state) value ( 'relay_2' , 'OFF') ",
             );
         }
     });

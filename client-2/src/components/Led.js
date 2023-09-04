@@ -1,47 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import Led_off from '../img/lightbulb.png';
-import Led_on from '../img/lightbulb_on.png';
+import React, { useEffect } from 'react';
+// import Led_off from '../img/lightbulb.png';
+// import Led_on from '../img/lightbulb_on.png';
 import Fan_off from '../img/fan_off.png';
 import Fan_on from '../img/fan_on.gif';
 
-const Led = () => {
-    const [isCheckedLight, setIsCheckedLight] = useState(false);
-    const [isCheckedFan, setIsCheckedFan] = useState(false);
+import io from 'socket.io-client';
 
-    const handleChangeLight = () => {
-        setIsCheckedLight(!isCheckedLight);
+const Led = ({
+    isCheckedLight,
+    setIsCheckedLight,
+    isCheckedFan,
+    setIsCheckedFan,
+}) => {
+    const socket = io('http://localhost:8688'); // Replace with your socket server URL
+
+    useEffect(() => {
+        // Listen for updates from the server
+        socket.on('relay_1', (data_received) => {
+            setIsCheckedLight(!data_received);
+        });
+
+        socket.on('relay_2', (data_received) => {
+            setIsCheckedFan(!data_received);
+            
+        });
+
+        // Clean up the socket listener when the component unmounts
+        return () => {
+            socket.disconnect();
+        };
+    }, [socket]);
+
+    const handleTurnOnLight = () => {
+        setIsCheckedLight(true);
+        // Thực hiện các thao tác cần thiết khi bật đèn
+        socket.emit('control_relay_1', 1);
     };
 
-    const handleChangeFan = () => {
-        setIsCheckedFan(!isCheckedFan);
+    const handleTurnOffLight = () => {
+        setIsCheckedLight(false);
+        // Thực hiện các thao tác cần thiết khi tắt đèn
+        socket.emit('control_relay_1', 0);
     };
-    // console.log(isCheckedLight)
+
+    const handleTurnOnFan = () => {
+        setIsCheckedFan(true);
+        // Thực hiện các thao tác cần thiết khi bật quạt
+        socket.emit('control_relay_2', 1);
+    };
+
+    const handleTurnOffFan = () => {
+        setIsCheckedFan(false);
+        // Thực hiện các thao tác cần thiết khi tắt quạt
+        socket.emit('control_relay_2', 0);
+    };
+
     return (
         <div className="flex flex-col justify-around">
             <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedLight ? (
                     <img
-                        src='https://webvn.com/wp-content/uploads/2015/08/pic_bulbon.gif'
+                        src="https://webvn.com/wp-content/uploads/2015/08/pic_bulbon.gif"
                         className="object-contain h-[90px] mr-[-50px]"
+                        alt="Light is on"
                     />
                 ) : (
                     <img
-                        src='https://www.w3schools.com/js/pic_bulboff.gif'
+                        src="https://www.w3schools.com/js/pic_bulboff.gif"
                         className="object-contain h-[90px] mr-[-50px]"
+                        alt="Light is off"
                     />
                 )}
                 <div className="ml-[-50px]">
                     <div>
-                        OFF&ensp;
-                        <input
-                            className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                            type="checkbox"
-                            role="switch"
-                            id="flexSwitchCheckDefault"
-                            checked={isCheckedLight}
-                            onChange={handleChangeLight}
-                        />
-                        &ensp;ON
+                        <button
+                            className={`mr-2 mt-[0.3rem] w-[80px] h-[35px] rounded-[0.4375rem] ${
+                                isCheckedLight
+                                    ? 'bg-primary text-white'
+                                    : 'bg-neutral-300 text-black'
+                            } focus:outline-none focus:ring-2 focus:ring-primary`}
+                            onClick={
+                                isCheckedLight
+                                    ? handleTurnOffLight
+                                    : handleTurnOnLight
+                            }
+                        >
+                            {isCheckedLight ? 'ON' : 'OFF'}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -51,25 +96,31 @@ const Led = () => {
                     <img
                         src={Fan_on}
                         className="object-contain h-[90px] mr-[-50px]"
+                        alt="Fan is on"
                     />
                 ) : (
                     <img
                         src={Fan_off}
                         className="object-contain h-[90px] mr-[-50px]"
+                        alt="Fan is off"
                     />
                 )}
                 <div className="ml-[-50px]">
                     <div>
-                        OFF&ensp;
-                        <input
-                            className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                            type="checkbox"
-                            role="switch"
-                            id="flexSwitchCheckDefault"
-                            checked={isCheckedFan}
-                            onChange={handleChangeFan}
-                        />
-                        &ensp;ON
+                        <button
+                            className={`mr-2 mt-[0.3rem] w-[80px] h-[35px] rounded-[0.4375rem] ${
+                                isCheckedFan
+                                    ? 'bg-primary text-white'
+                                    : 'bg-neutral-300 text-black'
+                            } focus:outline-none focus:ring-2 focus:ring-primary`}
+                            onClick={
+                                isCheckedFan
+                                    ? handleTurnOffFan
+                                    : handleTurnOnFan
+                            }
+                        >
+                            {isCheckedFan ? 'ON' : 'OFF'}
+                        </button>
                     </div>
                 </div>
             </div>

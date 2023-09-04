@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Clock from '../components/Clock';
 
-const DataSensor = () => {
-    const [dataSensor, setDataSensor] = useState([]);
-
+const DataSensor = ({dataSensor, setDataSensor}) => {
+   
     useEffect(() => {
         fetch("http://localhost:8688/api/sensordata")
           .then((response) => response.json())

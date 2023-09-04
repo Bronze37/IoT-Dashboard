@@ -2,12 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import io from 'socket.io-client';
 import useLimitedArray from '../config/useLimitedArray';
+import Chart from 'chart.js/auto';
 
-function DataChart() {
-    const [temp, setTemp] = useLimitedArray(10);
-    const [humi, setHumi] = useLimitedArray(10);
-    const [light, setLight] = useLimitedArray(10);
-    const [label, setLabel] = useLimitedArray(10);
+function DataChart({
+    temp,
+    setTemp,
+    humi,
+    setHumi,
+    light,
+    setLight,
+    label,
+    setLabel,
+}) {
+    // const [temp, setTemp] = useLimitedArray(10);
+    // const [humi, setHumi] = useLimitedArray(10);
+    // const [light, setLight] = useLimitedArray(10);
+    // const [label, setLabel] = useLimitedArray(10);
 
     useEffect(() => {
         const socket = io('http://localhost:8688');
@@ -36,18 +46,14 @@ function DataChart() {
         };
     }, []);
 
-    // Đảo ngược mảng để hiển thị từ trái qua phải
-    const reversedTemp = [...temp].reverse();
-    const reversedLabel = [...label].reverse();
-    const reversedHumi = [...humi].reverse();
-    const reversedLight = [...light].reverse();
+    // const reversedLabel = [...label].reverse();
 
     const chartData = {
-        labels: reversedLabel,
+        labels: label,
         datasets: [
             {
                 label: 'Nhiệt độ',
-                data: reversedTemp,
+                data: temp,
                 borderColor: 'red',
                 backgroundColor: 'red',
                 fill: false,
@@ -55,7 +61,7 @@ function DataChart() {
             },
             {
                 label: 'Độ ẩm',
-                data: reversedHumi,
+                data: humi,
                 borderColor: 'blue',
                 backgroundColor: 'blue',
                 fill: false,
@@ -63,7 +69,7 @@ function DataChart() {
             },
             {
                 label: 'Ánh sáng',
-                data: reversedLight,
+                data: light,
                 borderColor: 'yellow',
                 backgroundColor: 'yellow',
                 fill: false,

@@ -5,22 +5,25 @@ import sun from '../img/sun.png';
 
 import io from 'socket.io-client';
 
-// Tạo một context để lưu trữ dữ liệu
-const DataContext = createContext();
-
-// Provider component để cung cấp dữ liệu
-const DataProvider = ({ children }) => {
-    const [temperature, setTemperature] = useState(null);
-    const [humi, setHumi] = useState(null);
-    const [light, setLight] = useState(null);
-    const [bgTemp, setBgTemp] = useState('');
-    const [bgHumi, setBgHumi] = useState('');
-    const [bgLight, setBgLight] = useState('');
-
+const Cards = ({
+    tempCard,
+    setTempCard,
+    humiCard,
+    setHumiCard,
+    lightCard,
+    setLightCard,
+    bgHumi,
+    setBgHumi,
+    bgTemp,
+    setBgTemp,
+    bgLight,
+    setBgLight,
+}) => {
+   
     useEffect(() => {
         const socket = io('http://localhost:8688');
         socket.on('temp', (data) => {
-            setTemperature(data);
+            setTempCard(data);
             if (data <= 25) {
                 setBgTemp('blue');
             } else if (data <= 35) {
@@ -30,7 +33,7 @@ const DataProvider = ({ children }) => {
             }
         });
         socket.on('humi', (data) => {
-            setHumi(data);
+            setHumiCard(data);
             if (data <= 10) {
                 setBgHumi('lightcyan');
             } else if (data <= 65) {
@@ -40,7 +43,7 @@ const DataProvider = ({ children }) => {
             }
         });
         socket.on('light', (data) => {
-            setLight(data);
+            setLightCard(data);
             if (data <= 25) {
                 setBgLight('#A0A0A0');
             } else if (data <= 100) {
@@ -57,27 +60,6 @@ const DataProvider = ({ children }) => {
     }, []);
 
     return (
-        <DataContext.Provider
-            value={{ temperature, humi, light, bgTemp, bgHumi, bgLight }}
-        >
-            {children}
-        </DataContext.Provider>
-    );
-};
-
-// Custom hook để truy cập dữ liệu từ context
-const useData = () => {
-    const context = useContext(DataContext);
-    if (context === undefined) {
-        throw new Error('useData must be used within a DataProvider');
-    }
-    return context;
-};
-
-const Cards = () => {
-    const { temperature, humi, light, bgTemp, bgHumi, bgLight } = useData();
-
-    return (
         <div className="flex justify-around">
             <div
                 style={{ backgroundColor: bgTemp }}
@@ -90,7 +72,7 @@ const Cards = () => {
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-white">Nhiệt độ</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 ">
-                        {temperature} &deg; C
+                        {tempCard} &deg; C
                     </h5>
                 </div>
             </div>
@@ -106,7 +88,7 @@ const Cards = () => {
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Độ ẩm</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {humi} %
+                        {humiCard} %
                     </h5>
                 </div>
             </div>
@@ -119,7 +101,7 @@ const Cards = () => {
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Ánh sáng</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {light} lux
+                        {lightCard} lux
                     </h5>
                 </div>
             </div>
@@ -127,4 +109,4 @@ const Cards = () => {
     );
 };
 
-export { DataProvider, Cards };
+export default Cards;
