@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import io from 'socket.io-client';
-import useLimitedArray from '../config/useLimitedArray';
 import Chart from 'chart.js/auto';
 
 function DataChart({
@@ -14,11 +13,6 @@ function DataChart({
     label,
     setLabel,
 }) {
-    // const [temp, setTemp] = useLimitedArray(10);
-    // const [humi, setHumi] = useLimitedArray(10);
-    // const [light, setLight] = useLimitedArray(10);
-    // const [label, setLabel] = useLimitedArray(10);
-
     useEffect(() => {
         const socket = io('http://localhost:8688');
 
@@ -55,24 +49,24 @@ function DataChart({
                 label: 'Nhiệt độ',
                 data: temp,
                 borderColor: 'red',
-                backgroundColor: 'red',
-                fill: false,
+                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                fill: true,
                 lineTension: 0.3,
             },
             {
                 label: 'Độ ẩm',
                 data: humi,
                 borderColor: 'blue',
-                backgroundColor: 'blue',
-                fill: false,
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                fill: true,
                 lineTension: 0.3,
             },
             {
                 label: 'Ánh sáng',
                 data: light,
                 borderColor: 'yellow',
-                backgroundColor: 'yellow',
-                fill: false,
+                backgroundColor: 'rgba(255, 255, 0, 0.2)',
+                fill: true,
                 lineTension: 0.3,
             },
         ],
@@ -88,6 +82,9 @@ function DataChart({
                 },
             },
         },
+        animation: {
+            easing: 'easeInOutQuart', // Sử dụng hàm easing easeInOutQuart
+        }
     };
 
     return (

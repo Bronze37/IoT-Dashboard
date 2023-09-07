@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-// import Led_off from '../img/lightbulb.png';
-// import Led_on from '../img/lightbulb_on.png';
 import Fan_off from '../img/fan_off.png';
 import Fan_on from '../img/fan_on.gif';
 
@@ -12,7 +10,7 @@ const Led = ({
     isCheckedFan,
     setIsCheckedFan,
 }) => {
-    const socket = io('http://localhost:8688'); // Replace with your socket server URL
+    const socket = io('http://localhost:8688'); 
 
     useEffect(() => {
         // Listen for updates from the server

@@ -30,6 +30,10 @@ function App() {
     const [isCheckedLight, setIsCheckedLight] = useState(null);
     const [isCheckedFan, setIsCheckedFan] = useState(null);
 
+    //relay api
+    const [relay, setRelay] = useState([]);
+
+
     return (
         <div className="App flex justtify-around">
             <div className="w-[20%]">
@@ -78,7 +82,7 @@ function App() {
                             />
                         }
                     />
-                    <Route path="/actionhistory" element={<ActionHistory />} />
+                    <Route path="/actionhistory" element={<ActionHistory relay={relay} setRelay={setRelay}/>} />
                 </Routes>
             </div>
         </div>

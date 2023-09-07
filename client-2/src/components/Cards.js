@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useEffect } from 'react';
 import nhietDo from '../img/nhietdo.png';
 import humidity from '../img/humidity.png';
 import sun from '../img/sun.png';
@@ -19,7 +19,6 @@ const Cards = ({
     bgLight,
     setBgLight,
 }) => {
-   
     useEffect(() => {
         const socket = io('http://localhost:8688');
         socket.on('temp', (data) => {
@@ -70,7 +69,7 @@ const Cards = ({
                     className={`object-contain h-[90px] mr-[-50px]`}
                 />
                 <div className="ml-[-50px]">
-                    <p className="mb-4 text-base text-white">Nhiệt độ</p>
+                    <p className="mb-4 text-base text-neutral-600">Nhiệt độ</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 ">
                         {tempCard} &deg; C
                     </h5>

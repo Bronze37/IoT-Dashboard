@@ -4,7 +4,7 @@ const dbConn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '120202',
-    database: 'btl_iot',
+    database: 'btliot',
 });
 
 dbConn.connect(function (err) {

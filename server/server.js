@@ -38,7 +38,8 @@ client.on('message', function (topic, message) {
     var state_2 = data.state_2;
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
-    var light_data = Math.floor(Math.round(12000 / data.light));
+    var light_data = Math.floor(Math.round(10000 / data.light));
+    // var light_data = data.light;
 
     //cho giá trị vào bảng data trên mysql
     var sql =
@@ -79,12 +80,12 @@ io.on('connection', function (socket) {
         if (state1 == '1') {
             client.publish('relay_1', '1'); //pub sang bên esp
             dbConn.query(
-                "insert into relay(relay_id, state) value ( 'relay_1' , 'ON') ",
+                "insert into relay(relay_id, state) value ( 'LED' , 'ON') ",
             );
         } else {
             client.publish('relay_1', '0');
             dbConn.query(
-                "insert into relay(relay_id, state) value ( 'relay_1' , 'OFF') ",
+                "insert into relay(relay_id, state) value ( 'LED' , 'OFF') ",
             );
         }
     });
@@ -93,12 +94,12 @@ io.on('connection', function (socket) {
         if (state2 == '1') {
             client.publish('relay_2', '1');
             dbConn.query(
-                "insert into relay(relay_id, state) value ( 'relay_2' , 'ON') ",
+                "insert into relay(relay_id, state) value ( 'FAN' , 'ON') ",
             );
         } else {
             client.publish('relay_2', '0');
             dbConn.query(
-                "insert into relay(relay_id, state) value ( 'relay_2' , 'OFF') ",
+                "insert into relay(relay_id, state) value ( 'FAN' , 'OFF') ",
             );
         }
     });
