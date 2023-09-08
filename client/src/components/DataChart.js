@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { Line } from 'react-chartjs-2';
 import io from 'socket.io-client';
 import Chart from 'chart.js/auto';
@@ -84,7 +84,7 @@ function DataChart({
         },
         animation: {
             easing: 'easeInOutQuart', // Sử dụng hàm easing easeInOutQuart
-        }
+        },
     };
 
     return (

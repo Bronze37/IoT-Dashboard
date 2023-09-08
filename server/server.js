@@ -24,7 +24,7 @@ const io = require('socket.io')(server, {
 server.listen(port);
 
 ////////MQTT///
-var client = mqtt.connect('mqtt://192.168.1.5');
+var client = mqtt.connect('mqtt://192.168.109.117');
 client.on('connect', function () {
     console.log('mqtt connected');
     client.subscribe('sensor'); //phần cứng gửi dữ liệu lên, bên này sub vào kênh sensor
@@ -38,7 +38,7 @@ client.on('message', function (topic, message) {
     var state_2 = data.state_2;
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
-    var light_data = Math.floor(Math.round(10000 / data.light));
+    var light_data = Math.floor(Math.round(12000 / data.light));
     // var light_data = data.light;
 
     //cho giá trị vào bảng data trên mysql
@@ -52,15 +52,15 @@ client.on('message', function (topic, message) {
         ')';
     dbConn.query(sql, function (err, result) {
         if (err) throw err;
-        console.log(
-            ' temp: ' +
-                temp_data +
-                ' ,humi: ' +
-                humi_data +
-                ', light: ' +
-                light_data +
-                ' ',
-        );
+        // console.log(
+        //     ' temp: ' +
+        //         temp_data +
+        //         ' ,humi: ' +
+        //         humi_data +
+        //         ', light: ' +
+        //         light_data +
+        //         ' ',
+        // );
     });
 
     io.emit('temp', temp_data);

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Clock from '../components/Clock';
 
 const ActionHistory = ({ relay, setRelay }) => {
-    
     useEffect(() => {
         fetch('http://localhost:8688/api/relay')
             .then((response) => response.json())
@@ -25,6 +24,7 @@ const ActionHistory = ({ relay, setRelay }) => {
 
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     };
+
     return (
         <div>
             <strong className="h-[90px] border-b mr-[100px] flex justify-start items-center">
