@@ -12,7 +12,7 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
     }, [dataSensor]);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 20;
+    const recordsPerPage = 15;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
     const records = dataSensor.slice(firstIndex, lastIndex);
@@ -50,6 +50,7 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
                                 <th>Temp</th>
                                 <th>Humi</th>
                                 <th>Light</th>
+                                <th>DB</th>
                                 <th>Time</th>
                             </tr>
                         </thead>
@@ -61,6 +62,7 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
                                     <td>{sensor.temp}</td>
                                     <td>{sensor.humi}</td>
                                     <td>{sensor.light}</td>
+                                    <td>{sensor.light}</td>
                                     <td>
                                         {formatISO8601ToDateTime(sensor.date)}
                                     </td>
@@ -69,42 +71,106 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
                         </tbody>
                     </table>
 
-                    <nav>
+                    <nav className='flex justify-end mr-[-20px]'>
                         <ul className="pagination">
-                            <li className="page-item">
-                                <a
-                                    href="#"
-                                    className="page-link"
-                                    onClick={prePage}
-                                >
-                                    PREV
-                                </a>
-                            </li>
-                            {numbers.map((n, i) => (
-                                <li
-                                    className={`page-item ${
-                                        currentPage === n ? 'active' : ''
-                                    }`}
-                                    key={i}
-                                >
-                                    <a
-                                        href="#"
-                                        className="page-link"
-                                        onClick={() => changeCPage(n)}
-                                    >
-                                        {n}
-                                    </a>
-                                </li>
-                            ))}
-                            <li className="page-item">
-                                <a
-                                    href="#"
-                                    className="page-link"
-                                    onClick={nextPage}
-                                >
-                                    NEXT
-                                </a>
-                            </li>
+                            {numbers.map((n, i) => {
+                                // Tính toán số trang cần hiển thị trước và sau trang hiện tại
+                                const pagesToShow = 7; // Số trang liền kề (không tính trang hiện tại)
+                                const pagesBeforeCurrent = Math.floor(
+                                    pagesToShow / 2,
+                                );
+                                const pagesAfterCurrent =
+                                    pagesToShow - pagesBeforeCurrent;
+
+                                if (n === 1) {
+                                    // Hiển thị trang đầu tiên
+                                    return (
+                                        <li
+                                            className={`page-item ${
+                                                currentPage === n
+                                                    ? 'active'
+                                                    : ''
+                                            }`}
+                                            key={i}
+                                        >
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
+
+                                if (n === npage) {
+                                    // Hiển thị trang cuối cùng
+                                    return (
+                                        <li
+                                            className={`page-item ${
+                                                currentPage === n
+                                                    ? 'active'
+                                                    : ''
+                                            }`}
+                                            key={i}
+                                        >
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
+
+                                if (
+                                    n >= currentPage - pagesBeforeCurrent &&
+                                    n <= currentPage + pagesAfterCurrent &&
+                                    n !== 1 &&
+                                    n !== npage
+                                ) {
+                                    // Hiển thị trang hiện tại và các trang liền kề
+                                    return (
+                                        <li
+                                            className={`page-item ${
+                                                currentPage === n
+                                                    ? 'active'
+                                                    : ''
+                                            }`}
+                                            key={i}
+                                        >
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
+
+                                if (
+                                    (n === 2 &&
+                                        currentPage > pagesBeforeCurrent + 1) ||
+                                    (n === npage - 1 &&
+                                        currentPage < npage - pagesAfterCurrent)
+                                ) {
+                                    // Hiển thị dấu chấm ba (...) nếu cần
+                                    return (
+                                        <li className="page-item" key={i}>
+                                            <span className="page-link">
+                                                ...
+                                            </span>
+                                        </li>
+                                    );
+                                }
+
+                                return null; // Ẩn các ô pagination khác
+                            })}
                         </ul>
                     </nav>
                 </div>
@@ -112,20 +178,8 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
         </div>
     );
 
-    function prePage() {
-        if (currentPage !== firstIndex) {
-            setCurrentPage(currentPage - 1);
-        }
-    }
-
-    function nextPage(id) {
-        setCurrentPage(id)
-    }
-
-    function changeCPage() {
-        if (currentPage !== lastIndex) {
-            setCurrentPage(currentPage + 1);
-        }
+    function changeCPage(id) {
+        setCurrentPage(id);
     }
 };
 
