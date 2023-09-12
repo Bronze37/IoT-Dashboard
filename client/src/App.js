@@ -13,15 +13,17 @@ function App() {
     const [tempCard, setTempCard] = useState(null);
     const [humiCard, setHumiCard] = useState(null);
     const [lightCard, setLightCard] = useState(null);
+    const [dbCard, setDbCard] = useState(null);
     const [bgTemp, setBgTemp] = useState('');
     const [bgHumi, setBgHumi] = useState('');
     const [bgLight, setBgLight] = useState('');
 
     //chart
-    const [temp, setTemp] = useLimitedArray(10);
-    const [humi, setHumi] = useLimitedArray(10);
-    const [light, setLight] = useLimitedArray(10);
-    const [label, setLabel] = useLimitedArray(10);
+    const [temp, setTemp] = useLimitedArray(20);
+    const [humi, setHumi] = useLimitedArray(20);
+    const [light, setLight] = useLimitedArray(20);
+    const [label, setLabel] = useLimitedArray(20);
+    const [db, setDb] = useLimitedArray(20);
 
     //datasensor
     const [dataSensor, setDataSensor] = useState([]);
@@ -51,12 +53,16 @@ function App() {
                                 setHumi={setHumi}
                                 light={light}
                                 setLight={setLight}
+                                db={db}
+                                setDb={setDb}
                                 label={label}
                                 setLabel={setLabel}
                                 tempCard={tempCard}
                                 setTempCard={setTempCard}
                                 humiCard={humiCard}
                                 setHumiCard={setHumiCard}
+                                dbCard={dbCard}
+                                setDbCard={setDbCard}
                                 lightCard={lightCard}
                                 setLightCard={setLightCard}
                                 bgHumi={bgHumi}
@@ -69,6 +75,7 @@ function App() {
                                 setIsCheckedLight={setIsCheckedLight}
                                 isCheckedFan={isCheckedFan}
                                 setIsCheckedFan={setIsCheckedFan}
+
                             />
                         }
                     />

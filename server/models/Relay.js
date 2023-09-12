@@ -7,7 +7,7 @@ const Relay = function (relay) {
 };
 
 Relay.getAll = function (result) {
-    dbConn.query('SELECT * FROM relay ORDER BY id DESC', function (err, res) {   //SELECT * FROM sensordata ORDER BY id DESC
+    dbConn.query('SELECT * FROM relay ORDER BY id DESC', function (err, res) {   
         if (err) {
             console.log('error: ', err);
             result(null, err);

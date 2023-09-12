@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import io from 'socket.io-client';
 import Chart from 'chart.js/auto';
@@ -12,6 +12,8 @@ function DataChart({
     setLight,
     label,
     setLabel,
+    db,
+    setDb,
 }) {
     useEffect(() => {
         const socket = io('http://localhost:8688');
@@ -33,7 +35,10 @@ function DataChart({
             const anhsang = data_received;
             setLight(anhsang);
         });
-
+        socket.on('db', (data_received) => {
+            const dobui = data_received;
+            setDb(dobui);
+        });
         // Clean up the socket when the component unmounts
         return () => {
             socket.disconnect();
@@ -69,6 +74,14 @@ function DataChart({
                 fill: true,
                 lineTension: 0.3,
             },
+            {
+                label: 'Độ bụi',
+                data: db,
+                borderColor: 'gray',
+                backgroundColor: 'rgba(255, 255, 666, 0.2)',
+                fill: true,
+                lineTension: 0.3,
+            },
         ],
     };
 
@@ -82,9 +95,9 @@ function DataChart({
                 },
             },
         },
-        animation: {
-            easing: 'easeInOutQuart', // Sử dụng hàm easing easeInOutQuart
-        },
+        // animation: {
+        //     easing: 'easeInOutQuart', // Sử dụng hàm easing easeInOutQuart
+        // },
     };
 
     return (

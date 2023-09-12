@@ -39,6 +39,7 @@ client.on('message', function (topic, message) {
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
     var light_data = Math.floor(Math.round(12000 / data.light));
+    var db_data = data.db
     // var light_data = data.light;
 
     //cho giá trị vào bảng data trên mysql
@@ -52,15 +53,15 @@ client.on('message', function (topic, message) {
         ')';
     dbConn.query(sql, function (err, result) {
         if (err) throw err;
-        // console.log(
-        //     ' temp: ' +
-        //         temp_data +
-        //         ' ,humi: ' +
-        //         humi_data +
-        //         ', light: ' +
-        //         light_data +
-        //         ' ',
-        // );
+        console.log(
+            ' temp: ' +
+                temp_data +
+                ' ,humi: ' +
+                humi_data +
+                ', light: ' +
+                light_data +
+                ' ',
+        );
     });
 
     io.emit('temp', temp_data);
@@ -68,13 +69,16 @@ client.on('message', function (topic, message) {
     io.emit('light', light_data);
     io.emit('relay_1', state_1);
     io.emit('relay_2', state_2);
+    io.emit('db', db_data);
+
+    // console.log(db_data);
 
     console.log(state_1, state_2);
 });
 
 io.on('connection', function (socket) {
     // console.log(connection);
-    console.log('user ' + socket.id + ' connected'); //thông báo có người kết nối
+   // console.log('user ' + socket.id + ' connected'); //thông báo có người kết nối
     socket.on('control_relay_1', function (state1) {
         //
         if (state1 == '1') {
