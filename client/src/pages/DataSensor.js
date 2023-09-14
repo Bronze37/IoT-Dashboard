@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Clock from '../components/Clock';
 
-const DataSensor = ({ dataSensor, setDataSensor }) => {
+const DataSensor = ({
+    dataSensor,
+    setDataSensor,
+    currentPage,
+    setCurrentPage,
+}) => {
     useEffect(() => {
         fetch('http://localhost:8688/api/sensordata')
             .then((response) => response.json())
@@ -11,7 +16,7 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
             .catch((err) => console.log(err));
     }, [dataSensor]);
 
-    const [currentPage, setCurrentPage] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 15;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
@@ -46,7 +51,7 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
                     <table className="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                {/* <th>ID</th> */}
                                 <th>Temp</th>
                                 <th>Humi</th>
                                 <th>Light</th>
@@ -58,11 +63,11 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
                         <tbody>
                             {records.map((sensor) => (
                                 <tr key={sensor.id}>
-                                    <td>{sensor.id}</td>
+                                    {/* <td>{sensor.id}</td> */}
                                     <td>{sensor.temp}</td>
                                     <td>{sensor.humi}</td>
                                     <td>{sensor.light}</td>
-                                    <td>{sensor.light}</td>
+                                    <td>{sensor.db}</td>
                                     <td>
                                         {formatISO8601ToDateTime(sensor.date)}
                                     </td>
@@ -71,11 +76,11 @@ const DataSensor = ({ dataSensor, setDataSensor }) => {
                         </tbody>
                     </table>
 
-                    <nav className='flex justify-end mr-[-20px]'>
+                    <nav className="flex justify-end mr-[-20px]">
                         <ul className="pagination">
                             {numbers.map((n, i) => {
                                 // Tính toán số trang cần hiển thị trước và sau trang hiện tại
-                                const pagesToShow = 7; // Số trang liền kề (không tính trang hiện tại)
+                                const pagesToShow = 5; // Số trang liền kề (không tính trang hiện tại)
                                 const pagesBeforeCurrent = Math.floor(
                                     pagesToShow / 2,
                                 );

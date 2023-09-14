@@ -19,7 +19,10 @@ const Cards = ({
     setBgTemp,
     bgLight,
     setBgLight,
-    dbCard, setDbCard
+    dbCard, 
+    setDbCard,
+    bgDb,
+    setBgDb
 }) => {
     useEffect(() => {
         const socket = io('http://localhost:8688');
@@ -45,12 +48,12 @@ const Cards = ({
         });
         socket.on('db', (data) => {
             setDbCard(data);
-            if (data <= 25) {
-                setBgLight('#A0A0A0');
-            } else if (data <= 100) {
-                setBgLight('lightgoldenrodyellow');
+            if (data <= 20) {
+                setBgDb('#FFFFFF');
+            } else if (data <= 60) {
+                setBgDb('#DDDDDD');
             } else {
-                setBgLight('yellow');
+                setBgDb('#AAAAAA');
             }
         });
         socket.on('light', (data) => {
@@ -78,7 +81,7 @@ const Cards = ({
             >
                 <img
                     src={nhietDo}
-                    className={`object-contain h-[90px] mr-[-50px]`}
+                    className={`object-contain h-[75px] mr-[-50px]`}
                 />
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Nhiệt độ</p>
@@ -94,7 +97,7 @@ const Cards = ({
             >
                 <img
                     src={humidity}
-                    className="object-contain h-[90px] mr-[-50px]"
+                    className="object-contain h-[75px] mr-[-50px]"
                 />
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Độ ẩm</p>
@@ -108,7 +111,7 @@ const Cards = ({
                 style={{ backgroundColor: bgLight }}
                 className="flex w-[20%] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
             >
-                <img src={sun} className="object-contain h-[90px] mr-[-50px]" />
+                <img src={sun} className="object-contain h-[75px] mr-[-50px]" />
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Ánh sáng</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
@@ -118,14 +121,14 @@ const Cards = ({
             </div>
 
             <div
-                style={{ backgroundColor: bgLight }}
+                style={{ backgroundColor: bgDb }}
                 className="flex w-[20%] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
             >
                 <img src={dobui} className="object-contain h-[90px] mr-[-50px]" />
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Độ bụi</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {dbCard} lux
+                        {dbCard} %
                     </h5>
                 </div>
             </div>

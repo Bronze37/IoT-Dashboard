@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Clock from '../components/Clock';
 
-const ActionHistory = ({ relay, setRelay }) => {
+const ActionHistory = ({ relay, setRelay, currentPage1, setCurrentPage1 }) => {
     useEffect(() => {
         fetch('http://localhost:8688/api/relay')
             .then((response) => response.json())
@@ -12,6 +12,13 @@ const ActionHistory = ({ relay, setRelay }) => {
     }, []);
 
     console.log(relay);
+
+    const recordsPerPage = 15;
+    const lastIndex = currentPage1 * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const records = relay.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(relay.length / recordsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
 
     const formatISO8601ToDateTime = (isoString) => {
         const date = new Date(isoString);
@@ -46,7 +53,7 @@ const ActionHistory = ({ relay, setRelay }) => {
                         </thead>
 
                         <tbody>
-                            {relay.map((sensor) => (
+                            {records.map((sensor) => (
                                 <tr key={sensor.id}>
                                     <td>{sensor.id}</td>
                                     <td>{sensor.relay_id}</td>
@@ -59,9 +66,107 @@ const ActionHistory = ({ relay, setRelay }) => {
                         </tbody>
                     </table>
                 </div>
+
+                <nav className="flex justify-end mr-[-20px]">
+                    <ul className="pagination">
+                        {numbers.map((n, i) => {
+                            // Tính toán số trang cần hiển thị trước và sau trang hiện tại
+                            const pagesToShow = 5; // Số trang liền kề (không tính trang hiện tại)
+                            const pagesBeforeCurrent = Math.floor(
+                                pagesToShow / 2,
+                            );
+                            const pagesAfterCurrent =
+                                pagesToShow - pagesBeforeCurrent;
+
+                            if (n === 1) {
+                                // Hiển thị trang đầu tiên
+                                return (
+                                    <li
+                                        className={`page-item ${
+                                            currentPage1 === n ? 'active' : ''
+                                        }`}
+                                        key={i}
+                                    >
+                                        <a
+                                            href="#"
+                                            className="page-link"
+                                            onClick={() => changeCPage(n)}
+                                        >
+                                            {n}
+                                        </a>
+                                    </li>
+                                );
+                            }
+
+                            if (n === npage) {
+                                // Hiển thị trang cuối cùng
+                                return (
+                                    <li
+                                        className={`page-item ${
+                                            currentPage1 === n ? 'active' : ''
+                                        }`}
+                                        key={i}
+                                    >
+                                        <a
+                                            href="#"
+                                            className="page-link"
+                                            onClick={() => changeCPage(n)}
+                                        >
+                                            {n}
+                                        </a>
+                                    </li>
+                                );
+                            }
+
+                            if (
+                                n >= currentPage1 - pagesBeforeCurrent &&
+                                n <= currentPage1 + pagesAfterCurrent &&
+                                n !== 1 &&
+                                n !== npage
+                            ) {
+                                // Hiển thị trang hiện tại và các trang liền kề
+                                return (
+                                    <li
+                                        className={`page-item ${
+                                            currentPage1 === n ? 'active' : ''
+                                        }`}
+                                        key={i}
+                                    >
+                                        <a
+                                            href="#"
+                                            className="page-link"
+                                            onClick={() => changeCPage(n)}
+                                        >
+                                            {n}
+                                        </a>
+                                    </li>
+                                );
+                            }
+
+                            if (
+                                (n === 2 &&
+                                    currentPage1 > pagesBeforeCurrent + 1) ||
+                                (n === npage - 1 &&
+                                    currentPage1 < npage - pagesAfterCurrent)
+                            ) {
+                                // Hiển thị dấu chấm ba (...) nếu cần
+                                return (
+                                    <li className="page-item" key={i}>
+                                        <span className="page-link">...</span>
+                                    </li>
+                                );
+                            }
+
+                            return null; // Ẩn các ô pagination khác
+                        })}
+                    </ul>
+                </nav>
             </div>
         </div>
     );
+    function changeCPage(id) {
+        setCurrentPage1(id);
+    }
 };
 
 export default ActionHistory;

@@ -32,7 +32,11 @@ const Dashboard = ({
     dbCard,
     setDbCard,
     db,
-    setDb
+    setDb,
+    isCheckedLight1,
+    setIsCheckedLight1,
+    bgDb,
+    setBgDb
 }) => {
     return (
         <div>
@@ -58,6 +62,8 @@ const Dashboard = ({
                     setBgLight={setBgLight}
                     dbCard={dbCard}
                     setDbCard={setDbCard}
+                    bgDb={bgDb}
+                    setBgDb={setBgDb}
                 />
             </div>
 
@@ -84,6 +90,8 @@ const Dashboard = ({
                         setIsCheckedLight={setIsCheckedLight}
                         isCheckedFan={isCheckedFan}
                         setIsCheckedFan={setIsCheckedFan}
+                        isCheckedLight1={isCheckedLight1}
+                        setIsCheckedLight1={setIsCheckedLight1}
                     />
                 </div>
             </div>

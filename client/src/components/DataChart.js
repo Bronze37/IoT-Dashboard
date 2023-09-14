@@ -55,7 +55,7 @@ function DataChart({
                 data: temp,
                 borderColor: 'red',
                 backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                fill: true,
+                // fill: true,
                 lineTension: 0.3,
             },
             {
@@ -63,7 +63,7 @@ function DataChart({
                 data: humi,
                 borderColor: 'blue',
                 backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                fill: true,
+                // fill: true,
                 lineTension: 0.3,
             },
             {
@@ -71,7 +71,7 @@ function DataChart({
                 data: light,
                 borderColor: 'yellow',
                 backgroundColor: 'rgba(255, 255, 0, 0.2)',
-                fill: true,
+                // fill: true,
                 lineTension: 0.3,
             },
             {
@@ -79,7 +79,7 @@ function DataChart({
                 data: db,
                 borderColor: 'gray',
                 backgroundColor: 'rgba(255, 255, 666, 0.2)',
-                fill: true,
+                // fill: true,
                 lineTension: 0.3,
             },
         ],

@@ -4,7 +4,7 @@ const app = express();
 const port = 8688;
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql2'); 
+const mysql = require('mysql2');
 
 const dbConn = require('./config/dbConn');
 
@@ -24,7 +24,7 @@ const io = require('socket.io')(server, {
 server.listen(port);
 
 ////////MQTT///
-var client = mqtt.connect('mqtt://192.168.109.117');
+var client = mqtt.connect('mqtt://192.168.143.117');
 client.on('connect', function () {
     console.log('mqtt connected');
     client.subscribe('sensor'); //phần cứng gửi dữ liệu lên, bên này sub vào kênh sensor
@@ -39,17 +39,19 @@ client.on('message', function (topic, message) {
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
     var light_data = Math.floor(Math.round(12000 / data.light));
-    var db_data = data.db
+    var db_data = data.db;
     // var light_data = data.light;
 
     //cho giá trị vào bảng data trên mysql
     var sql =
-        'insert into sensordata(temp,humi,light) value ( ' +
+        'insert into sensordata(temp,humi,light,db) value ( ' +
         temp_data +
         ' , ' +
         humi_data +
         ' ,' +
         light_data +
+        ' ,' +
+        db_data +
         ')';
     dbConn.query(sql, function (err, result) {
         if (err) throw err;
@@ -60,6 +62,8 @@ client.on('message', function (topic, message) {
                 humi_data +
                 ', light: ' +
                 light_data +
+                'db: ' +
+                db_data +
                 ' ',
         );
     });
@@ -78,7 +82,7 @@ client.on('message', function (topic, message) {
 
 io.on('connection', function (socket) {
     // console.log(connection);
-   // console.log('user ' + socket.id + ' connected'); //thông báo có người kết nối
+    // console.log('user ' + socket.id + ' connected'); //thông báo có người kết nối
     socket.on('control_relay_1', function (state1) {
         //
         if (state1 == '1') {
@@ -104,6 +108,20 @@ io.on('connection', function (socket) {
             client.publish('relay_2', '0');
             dbConn.query(
                 "insert into relay(relay_id, state) value ( 'FAN' , 'OFF') ",
+            );
+        }
+    });
+
+    socket.on('control_relay_3', function (state3) {
+        if (state3 == '1') {
+            client.publish('relay_3', '1');
+            dbConn.query(
+                "insert into relay(relay_id, state) value ( 'LED2' , 'ON') ",
+            );
+        } else {
+            client.publish('relay_3', '0');
+            dbConn.query(
+                "insert into relay(relay_id, state) value ( 'LED2' , 'OFF') ",
             );
         }
     });

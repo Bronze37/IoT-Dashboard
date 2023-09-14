@@ -17,6 +17,7 @@ function App() {
     const [bgTemp, setBgTemp] = useState('');
     const [bgHumi, setBgHumi] = useState('');
     const [bgLight, setBgLight] = useState('');
+    const [bgDb, setBgDb] = useState('');
 
     //chart
     const [temp, setTemp] = useLimitedArray(20);
@@ -26,15 +27,19 @@ function App() {
     const [db, setDb] = useLimitedArray(20);
 
     //datasensor
+    const [currentPage, setCurrentPage] = useState(1);
     const [dataSensor, setDataSensor] = useState([]);
+
+    //action history
+    const [currentPage1, setCurrentPage1] = useState(1);
 
     //Led
     const [isCheckedLight, setIsCheckedLight] = useState(null);
+    const [isCheckedLight1, setIsCheckedLight1] = useState(null);
     const [isCheckedFan, setIsCheckedFan] = useState(null);
 
     //relay api
     const [relay, setRelay] = useState([]);
-
 
     return (
         <div className="App flex justtify-around">
@@ -71,11 +76,14 @@ function App() {
                                 setBgTemp={setBgTemp}
                                 bgLight={bgLight}
                                 setBgLight={setBgLight}
+                                bgDb={bgDb}
+                                setBgDb={setBgDb}
                                 isCheckedLight={isCheckedLight}
                                 setIsCheckedLight={setIsCheckedLight}
                                 isCheckedFan={isCheckedFan}
                                 setIsCheckedFan={setIsCheckedFan}
-
+                                isCheckedLight1={isCheckedLight1}
+                                setIsCheckedLight1={setIsCheckedLight1}
                             />
                         }
                     />
@@ -86,10 +94,22 @@ function App() {
                             <DataSensor
                                 dataSensor={dataSensor}
                                 setDataSensor={setDataSensor}
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
                             />
                         }
                     />
-                    <Route path="/actionhistory" element={<ActionHistory relay={relay} setRelay={setRelay}/>} />
+                    <Route
+                        path="/actionhistory"
+                        element={
+                            <ActionHistory
+                                relay={relay}
+                                setRelay={setRelay}
+                                currentPage1={currentPage1}
+                                setCurrentPage1={setCurrentPage1}
+                            />
+                        }
+                    />
                 </Routes>
             </div>
         </div>
