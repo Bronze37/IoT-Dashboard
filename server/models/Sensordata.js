@@ -4,7 +4,7 @@ const Sensordata = function (dataSensor) {
     this.temp = dataSensor.temp;
     this.humi = dataSensor.humi;
     this.light = dataSensor.light;
-    this.db = dataSensor.db;
+    //this.db = dataSensor.db;
     this.date = dataSensor.date;
 };
 

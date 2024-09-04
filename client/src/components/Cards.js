@@ -46,16 +46,16 @@ const Cards = ({
                 setBgHumi('mediumturquoise');
             }
         });
-        socket.on('db', (data) => {
-            setDbCard(data);
-            if (data <= 20) {
-                setBgDb('#FFFFFF');
-            } else if (data <= 60) {
-                setBgDb('#DDDDDD');
-            } else {
-                setBgDb('#AAAAAA');
-            }
-        });
+        // socket.on('db', (data) => {
+        //     setDbCard(data);
+        //     if (data <= 20) {
+        //         setBgDb('#FFFFFF');
+        //     } else if (data <= 60) {
+        //         setBgDb('#DDDDDD');
+        //     } else {
+        //         setBgDb('#AAAAAA');
+        //     }
+        // });
         socket.on('light', (data) => {
             setLightCard(data);
             if (data <= 25) {
@@ -77,7 +77,7 @@ const Cards = ({
         <div className="flex justify-around">
             <div
                 style={{ backgroundColor: bgTemp }}
-                className="flex w-[20%] h-[150px] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
+                className="flex w-[25%] h-[150px] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
             >
                 <img
                     src={nhietDo}
@@ -86,14 +86,14 @@ const Cards = ({
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Nhiệt độ</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 ">
-                        {tempCard} &deg; C
+                        {tempCard} &deg; 30 C
                     </h5>
                 </div>
             </div>
 
             <div
                 style={{ backgroundColor: bgHumi }}
-                className="flex w-[20%] justify-around items-center rounded-xl bg-clip-border text-gray-700 shadow-md border"
+                className="flex w-[25%] justify-around items-center rounded-xl bg-clip-border text-gray-700 shadow-md border"
             >
                 <img
                     src={humidity}
@@ -102,25 +102,25 @@ const Cards = ({
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Độ ẩm</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {humiCard} %
+                        {humiCard} 25 %
                     </h5>
                 </div>
             </div>
 
             <div
                 style={{ backgroundColor: bgLight }}
-                className="flex w-[20%] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
+                className="flex w-[25%] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
             >
                 <img src={sun} className="object-contain h-[75px] mr-[-50px]" />
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Ánh sáng</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {lightCard} lux
+                        {lightCard} 600 lux
                     </h5>
                 </div>
             </div>
 
-            <div
+            {/* <div
                 style={{ backgroundColor: bgDb }}
                 className="flex w-[20%] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
             >
@@ -131,7 +131,7 @@ const Cards = ({
                         {dbCard} %
                     </h5>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

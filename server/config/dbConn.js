@@ -1,9 +1,9 @@
-const mysql = require('mysql2'); //thư viện mysql
+const mysql = require('mysql2');
 
 const dbConn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '120202',
+    password: '01062002',
     database: 'btliot',
 });
 

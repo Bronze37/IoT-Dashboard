@@ -73,7 +73,7 @@ const Led = ({
 
     return (
         <div className="flex flex-col justify-around">
-            <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[110px]">
+            <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedLight ? (
                     <img
                         src="https://webvn.com/wp-content/uploads/2015/08/pic_bulbon.gif"
@@ -107,7 +107,7 @@ const Led = ({
                 </div>
             </div>
 
-            <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[110px]">
+            <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedLight1 ? (
                     <img
                         src="https://webvn.com/wp-content/uploads/2015/08/pic_bulbon.gif"
@@ -132,7 +132,7 @@ const Led = ({
                             onClick={
                                 isCheckedLight1
                                     ? handleTurnOffLight1
-                                    : handleTurnOnLight1
+                                     : handleTurnOnLight1
                             }
                         >
                             {isCheckedLight1 ? 'ON' : 'OFF'}
@@ -141,7 +141,7 @@ const Led = ({
                 </div>
             </div>
 
-            <div className="flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[110px]">
+            <div className="flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedFan ? (
                     <img
                         src={Fan_on}

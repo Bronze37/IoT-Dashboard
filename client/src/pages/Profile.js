@@ -29,9 +29,9 @@ const Profile = () => {
                             </div>
                             <div className="text-center mt-12">
                                 <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700">
-                                    Bùi Văn Huy <br />
+                                    Nguyễn Đình Đồng <br />
                                     <span className="text-[15px]">
-                                        B20DCCN306
+                                        B21DCCN231
                                     </span>
                                 </h3>
 
@@ -48,13 +48,13 @@ const Profile = () => {
                                 <div className="flex justify-center">
                                     <div className="w-full lg:w-9/12 px-4">
                                         <i className="fa fa-envelope mr-2 text-lg text-blueGray-400"></i>
-                                        bvhuy120202@gmail.com
+                                        ndinhdong.1808@gmail.com
                                     </div>
                                 </div>
                                 <div className="flex justify-center ml-[-100px]">
                                     <div className="w-full lg:w-9/12 px-4">
                                         <i className="fa fa-phone-square mr-2 text-lg text-blueGray-400"></i>
-                                        0327971563
+                                        0384617563
                                     </div>
                                 </div>
                             </div>
