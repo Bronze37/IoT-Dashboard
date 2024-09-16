@@ -33,7 +33,7 @@ function DataChart() {
                 const newLabel = [...prevLabel, currentTime];
                 return newLabel.length > maxDataPoints ? newLabel.slice(1) : newLabel;
             });
-        }, 1000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, []);
@@ -48,6 +48,8 @@ function DataChart() {
                 backgroundColor: 'rgba(255, 0, 0, 0.2)',
                 yAxisID: 'y1',
                 lineTension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
             },
             {
                 label: 'Độ ẩm',
@@ -56,6 +58,8 @@ function DataChart() {
                 backgroundColor: 'rgba(0, 0, 255, 0.2)',
                 yAxisID: 'y1',
                 lineTension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
             },
             {
                 label: 'Ánh sáng',
@@ -64,16 +68,58 @@ function DataChart() {
                 backgroundColor: 'rgba(255, 255, 0, 0.2)',
                 yAxisID: 'y2',
                 lineTension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
             },
         ],
     };
 
     const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1000, // Duration of animations in milliseconds
+            easing: 'easeInOutQuad', // Easing function to use for animations
+        },
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    font: {
+                        size: 14,
+                    },
+                },
+            },
+            tooltip: {
+                enabled: true,
+                mode: 'index',
+                intersect: false,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                titleFont: {
+                    size: 16,
+                },
+                bodyFont: {
+                    size: 14,
+                },
+                footerFont: {
+                    size: 12,
+                },
+            },
+        },
         scales: {
             x: {
                 title: {
                     display: true,
                     text: 'Thời gian',
+                    font: {
+                        size: 16,
+                    },
+                },
+                ticks: {
+                    font: {
+                        size: 14,
+                    },
                 },
             },
             y1: {
@@ -82,6 +128,14 @@ function DataChart() {
                 title: {
                     display: true,
                     text: 'Nhiệt độ và Độ ẩm',
+                    font: {
+                        size: 16,
+                    },
+                },
+                ticks: {
+                    font: {
+                        size: 14,
+                    },
                 },
                 min: 0,
                 max: 100,
@@ -92,6 +146,14 @@ function DataChart() {
                 title: {
                     display: true,
                     text: 'Ánh sáng',
+                    font: {
+                        size: 16,
+                    },
+                },
+                ticks: {
+                    font: {
+                        size: 14,
+                    },
                 },
                 min: 300,
                 max: 1000,
@@ -103,7 +165,7 @@ function DataChart() {
     };
 
     return (
-        <div className="border rounded-lg mr-11 ml-[20px]">
+        <div className="border rounded-lg mr-11 ml-[20px] h-[500px]">
             <Line data={chartData} options={chartOptions} />
         </div>
     );
