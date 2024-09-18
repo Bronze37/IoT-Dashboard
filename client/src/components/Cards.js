@@ -86,7 +86,7 @@ const Cards = ({
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Nhiệt độ</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 ">
-                        {tempCard} &deg; 30 C
+                        {tempCard} &deg; C
                     </h5>
                 </div>
             </div>
@@ -102,7 +102,7 @@ const Cards = ({
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Độ ẩm</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {humiCard} 25 %
+                        {humiCard} %
                     </h5>
                 </div>
             </div>
@@ -115,7 +115,7 @@ const Cards = ({
                 <div className="ml-[-50px]">
                     <p className="mb-4 text-base text-neutral-600">Ánh sáng</p>
                     <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-                        {lightCard} 600 lux
+                        {lightCard} lux
                     </h5>
                 </div>
             </div>

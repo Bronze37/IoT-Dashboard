@@ -107,7 +107,7 @@ const Led = ({
                 </div>
             </div>
 
-            <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
+            {/* <div className="mb-[40px] flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedLight1 ? (
                     <img
                         src="https://webvn.com/wp-content/uploads/2015/08/pic_bulbon.gif"
@@ -139,7 +139,7 @@ const Led = ({
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="flex w-[100%] justify-around items-center rounded-xl bg-white bg-clip-border text-gray-700 shadow-md border h-[150px]">
                 {isCheckedFan ? (

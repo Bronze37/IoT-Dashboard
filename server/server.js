@@ -25,7 +25,7 @@ const io = require('socket.io')(server, {
 server.listen(port); // khởi động máy chủ lắng nghe các kêt nối đến cổng
 
 ////////MQTT///
-var client = mqtt.connect('mqtt://192.168.1.117');// tạo 1 kênh kết nốt MQTT tới máy chủ có ip
+var client = mqtt.connect('mqtt://localhost');// tạo 1 kênh kết nốt MQTT tới máy chủ có ip
 client.on('connect', function () {
     console.log('mqtt connected');// in thông báo mqtt thiết lập thành công
     client.subscribe('sensor'); //phần cứng gửi dữ liệu lên, bên này sub vào kênh sensor
@@ -39,33 +39,23 @@ client.on('message', function (topic, message) {
     var state_2 = data.state_2;
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
-    var light_data = Math.floor(Math.round(12000 / data.light));
+    var light_data = Math.floor(Math.round(data.light));
     // var db_data = data.db;
     // var light_data = data.light;
 
     //cho giá trị vào bảng data trên mysql
-    var sql =
-        'insert into sensordata(temp,humi,light,db) value ( ' +
-        temp_data +
-        ' , ' +
-        humi_data +
-        ' ,' +
-        light_data +
-        ' ,' +
-        // db_data +
-        ')';
+    var sql = 'INSERT INTO sensordata (temp, humi, light) VALUES (' +
+          temp_data + ' , ' +
+          humi_data + ' , ' +
+          light_data + ')';
+
     dbConn.query(sql, function (err, result) {
         // if (err) throw err;
         console.log(
-            ' temp: ' +
-                temp_data +
-                ' ,humi: ' +
-                humi_data +
-                ', light: ' +
-                light_data +
-                'db: ' +
-                // db_data +
-                ' ',
+            ' temp : ' + temp_data +
+            ' ,humi: ' + humi_data +
+            ', light: ' + light_data +
+            ' ',
         );
     });
 
@@ -88,28 +78,28 @@ io.on('connection', function (socket) {
         //
         if (state1 == '1') {
             client.publish('relay_1', '1'); //pub sang bên esp
-            // dbConn.query(
-            //     "insert into relay(relay_id, state) value ( 'LED' , 'ON') ",
-            // );
+            dbConn.query(
+                "insert into relay(relay_id, state) value ( 'LED' , 'ON') ",
+            );
         } else {
             client.publish('relay_1', '0');
-            // dbConn.query(
-            //     "insert into relay(relay_id, state) value ( 'LED' , 'OFF') ",
-            // );
+            dbConn.query(
+                "insert into relay(relay_id, state) value ( 'LED' , 'OFF') ",
+            );
         }
     });
 
     socket.on('control_relay_2', function (state2) {
         if (state2 == '1') {
             client.publish('relay_2', '1');
-            // dbConn.query(
-            //     "insert into relay(relay_id, state) value ( 'FAN' , 'ON') ",
-            // );
+            dbConn.query(
+                "insert into relay(relay_id, state) value ( 'FAN' , 'ON') ",
+            );
         } else {
             client.publish('relay_2', '0');
-            // dbConn.query(
-            //     "insert into relay(relay_id, state) value ( 'FAN' , 'OFF') ",
-            // );
+            dbConn.query(
+                "insert into relay(relay_id, state) value ( 'FAN' , 'OFF') ",
+            );
         }
     });
 
