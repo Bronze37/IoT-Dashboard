@@ -35,7 +35,7 @@ function App() {
 
     //Led
     const [isCheckedLight, setIsCheckedLight] = useState(null);
-    const [isCheckedLight1, setIsCheckedLight1] = useState(null);
+    const [isCheckedAirCon, setIsCheckedAirCon] = useState(null);
     const [isCheckedFan, setIsCheckedFan] = useState(null);
 
     //relay api
@@ -82,8 +82,8 @@ function App() {
                                 setIsCheckedLight={setIsCheckedLight}
                                 isCheckedFan={isCheckedFan}
                                 setIsCheckedFan={setIsCheckedFan}
-                                isCheckedLight1={isCheckedLight1}
-                                setIsCheckedLight1={setIsCheckedLight1}
+                                isCheckedAirCon={isCheckedAirCon}
+                                setIsCheckedAirCon={setIsCheckedAirCon}
                             />
                         }
                     />

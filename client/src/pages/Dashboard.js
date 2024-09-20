@@ -33,8 +33,8 @@ const Dashboard = ({
     setDbCard,
     db,
     setDb,
-    isCheckedLight1,
-    setIsCheckedLight1,
+    isCheckedAirCon,
+    setIsCheckedAirCon,
     bgDb,
     setBgDb
 }) => {
@@ -90,8 +90,8 @@ const Dashboard = ({
                         setIsCheckedLight={setIsCheckedLight}
                         isCheckedFan={isCheckedFan}
                         setIsCheckedFan={setIsCheckedFan}
-                        isCheckedLight1={isCheckedLight1}
-                        setIsCheckedLight1={setIsCheckedLight1}
+                        isCheckedAirCon={isCheckedAirCon}
+                        setIsCheckedAirCon={setIsCheckedAirCon}
                     />
                 </div>
             </div>

@@ -37,6 +37,7 @@ client.on('message', function (topic, message) {
     const data = JSON.parse(message);
     var state_1 = data.state_1;
     var state_2 = data.state_2;
+    var state_3 = data.state_3;
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
     var light_data = Math.floor(Math.round(data.light));
@@ -64,11 +65,12 @@ client.on('message', function (topic, message) {
     io.emit('light', light_data);
     io.emit('relay_1', state_1);
     io.emit('relay_2', state_2);
+    io.emit('relay_3', state_3);
     // io.emit('db', db_data);
 
     // console.log(db_data);
 
-    console.log(state_1, state_2);
+    console.log(state_1, state_2, state_3);
 });
 
 io.on('connection', function (socket) {
@@ -107,12 +109,12 @@ io.on('connection', function (socket) {
         if (state3 == '1') {
             client.publish('relay_3', '1');
             dbConn.query(
-                "insert into relay(relay_id, state) value ( 'LED2' , 'ON') ",
+                "insert into relay(relay_id, state) value ( 'AC' , 'ON') ",
             );
         } else {
             client.publish('relay_3', '0');
             dbConn.query(
-                "insert into relay(relay_id, state) value ( 'LED2' , 'OFF') ",
+                "insert into relay(relay_id, state) value ( 'AC' , 'OFF') ",
             );
         }
     });

@@ -16,13 +16,9 @@ const DataSensor = ({
             .catch((err) => console.log(err));
     }, [dataSensor]);
 
-    // const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 15;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = dataSensor.slice(firstIndex, lastIndex);
-    const npage = Math.ceil(dataSensor.length / recordsPerPage);
-    const numbers = [...Array(npage + 1).keys()].slice(1);
+    const [pageSize, setPageSize] = useState(15);
+    const [filter, setFilter] = useState('all');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const formatISO8601ToDateTime = (isoString) => {
         const date = new Date(isoString);
@@ -36,6 +32,44 @@ const DataSensor = ({
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     };
 
+    const filteredData = dataSensor.filter(sensor => {
+        if (!searchQuery) return true;
+        const formattedDate = formatISO8601ToDateTime(sensor.date);
+        switch (filter) {
+            case 'temp':
+                return sensor.temp.toString().includes(searchQuery);
+            case 'humi':
+                return sensor.humi.toString().includes(searchQuery);
+            case 'light':
+                return sensor.light.toString().includes(searchQuery);
+            case 'time':
+                return formattedDate.includes(searchQuery);
+            case 'all':
+            default:
+                return (
+                    sensor.temp.toString().includes(searchQuery) ||
+                    sensor.humi.toString().includes(searchQuery) ||
+                    sensor.light.toString().includes(searchQuery) ||
+                    formattedDate.includes(searchQuery)
+                );
+        }
+    });
+    const lastIndex = currentPage * pageSize;
+    const firstIndex = lastIndex - pageSize;
+    const records = filteredData.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(filteredData.length / pageSize);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+    const handlePageSizeChange = (e) => {
+        setPageSize(Number(e.target.value));
+        setCurrentPage(1);
+    };
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery]);
+
+    
+
     // console.log(dataSensor)
 
     return (
@@ -48,37 +82,59 @@ const DataSensor = ({
 
             <div className="mt-[20px] mr-[100px]">
                 <div className="row">
+                    <div className="col-md-4">
+                        <label htmlFor="pageSize">Page Size:</label>
+                        <select
+                            id="pageSize"
+                            value={pageSize}
+                            onChange={handlePageSizeChange}
+                            className="form-control"
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                            <option value={20}>20</option>
+                        </select>
+                    </div>
+                    <div className="col-md-4">
+                        <label htmlFor="filter">Filter:</label>
+                        <select
+                            id="filter"
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="all">All</option>
+                            <option value="temp">Temp</option>
+                            <option value="humi">Humi</option>
+                            <option value="light">Light</option>
+                            <option value="time">Time</option>
+                        </select>
+                    </div>
+                    <div className="col-md-4">
+                        <label htmlFor="searchQuery">Search:</label>
+                        <input
+                            type="text"
+                            id="searchQuery"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="form-control"
+                            placeholder="Enter search term"
+                        />
+                    </div>
+                </div>
+
+                <br></br>
+
                     <table className="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th className='flex justify-center'>
                                     Temp
-                                    <div class="dropdown">
-                                        <button
-                                            class="btn btn-primary dropdown-toggle"
-                                            type="button"
-                                            data-toggle="dropdown"
-                                        >
-                                            
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="#">HTML</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">CSS</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">JavaScript</a>
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </th>
                                 <th>Humi</th>
                                 <th>Light</th>
-                                <th>DB</th>
                                 <th>Time</th>
                             </tr>
                         </thead>
@@ -90,7 +146,6 @@ const DataSensor = ({
                                     <td>{sensor.temp}</td>
                                     <td>{sensor.humi}</td>
                                     <td>{sensor.light}</td>
-                                    <td>{sensor.db}</td>
                                     <td>
                                         {formatISO8601ToDateTime(sensor.date)}
                                     </td>
@@ -203,7 +258,7 @@ const DataSensor = ({
                     </nav>
                 </div>
             </div>
-        </div>
+        
     );
 
     function changeCPage(id) {
