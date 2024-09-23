@@ -45,8 +45,6 @@ function DataChart({
         };
     }, []);
 
-    // const reversedLabel = [...label].reverse();
-
     const chartData = {
         labels: label,
         datasets: [
@@ -55,7 +53,7 @@ function DataChart({
                 data: temp,
                 borderColor: 'red',
                 backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                // fill: true,
+                yAxisID: 'y-left',
                 lineTension: 0.3,
             },
             {
@@ -63,7 +61,7 @@ function DataChart({
                 data: humi,
                 borderColor: 'blue',
                 backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                // fill: true,
+                yAxisID: 'y-left',
                 lineTension: 0.3,
             },
             {
@@ -71,21 +69,12 @@ function DataChart({
                 data: light,
                 borderColor: 'yellow',
                 backgroundColor: 'rgba(255, 255, 0, 0.2)',
-                // fill: true,
+                yAxisID: 'y-right',
                 lineTension: 0.3,
             },
-            // {
-            //     label: 'Độ bụi',
-            //     data: db,
-            //     borderColor: 'gray',
-            //     backgroundColor: 'rgba(255, 255, 666, 0.2)',
-            //     // fill: true,
-            //     lineTension: 0.3,
-            // },
         ],
     };
 
-    // Cấu hình biểu đồ
     const chartOptions = {
         scales: {
             x: {
@@ -94,10 +83,30 @@ function DataChart({
                     text: 'Hệ thống IoT',
                 },
             },
+            'y-left': {
+                type: 'linear',
+                position: 'left',
+                min: 0,
+                max: 100,
+                title: {
+                    display: true,
+                    text: 'Nhiệt độ và Độ ẩm',
+                },
+            },
+            'y-right': {
+                type: 'linear',
+                position: 'right',
+                min: 0,
+                max: 500,
+                title: {
+                    display: true,
+                    text: 'Ánh sáng',
+                },
+                grid: {
+                    drawOnChartArea: false, // Chỉ vẽ lưới cho trục y bên trái
+                },
+            },
         },
-        // animation: {
-        //     easing: 'easeInOutQuart', // Sử dụng hàm easing easeInOutQuart
-        // },
     };
 
     return (

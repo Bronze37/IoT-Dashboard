@@ -20,11 +20,11 @@ function App() {
     const [bgDb, setBgDb] = useState('');
 
     //chart
-    const [temp, setTemp] = useLimitedArray(20);
-    const [humi, setHumi] = useLimitedArray(20);
-    const [light, setLight] = useLimitedArray(20);
-    const [label, setLabel] = useLimitedArray(20);
-    const [db, setDb] = useLimitedArray(20);
+    const [temp, setTemp] = useLimitedArray(10);
+    const [humi, setHumi] = useLimitedArray(10);
+    const [light, setLight] = useLimitedArray(10);
+    const [label, setLabel] = useLimitedArray(10);
+    const [db, setDb] = useLimitedArray(10);
 
     //datasensor
     const [currentPage, setCurrentPage] = useState(1);
