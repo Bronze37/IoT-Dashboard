@@ -46,16 +46,16 @@ const Cards = ({
                 setBgHumi('mediumturquoise');
             }
         });
-        // socket.on('db', (data) => {
-        //     setDbCard(data);
-        //     if (data <= 20) {
-        //         setBgDb('#FFFFFF');
-        //     } else if (data <= 60) {
-        //         setBgDb('#DDDDDD');
-        //     } else {
-        //         setBgDb('#AAAAAA');
-        //     }
-        // });
+        socket.on('db', (data) => {
+            setDbCard(data);
+            if (data <= 20) {
+                setBgDb('#FFFFFF');
+            } else if (data <= 60) {
+                setBgDb('#DDDDDD');
+            } else {
+                setBgDb('#AAAAAA');
+            }
+        });
         socket.on('light', (data) => {
             setLightCard(data);
             if (data <= 25) {

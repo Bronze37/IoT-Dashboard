@@ -9,13 +9,15 @@ const mysql = require('mysql2');
 const dbConn = require('./config/dbConn');
 
 // cấu hình ứng dụng express
-app.use(cors());// kích hoạt chia sẻ tài nguyên giữa các nguồn khác nhau
+app.use(cors()); // kích hoạt chia sẻ tài nguyên giữa các nguồn khác nhau
 
-app.use(bodyParser.urlencoded({ extended: true }));//
-app.use(bodyParser.json());// phân tích các yêu cầu đến và truy xuất dữ liệu
+app.use(bodyParser.urlencoded({
+    extended: true
+})); //
+app.use(bodyParser.json()); // phân tích các yêu cầu đến và truy xuất dữ liệu
 app.use('/data', express.static('data')); // cung cấp quyền truy cập
 
-const server = require('http').Server(app);// tạo máy chủ HTTP sử dụng express
+const server = require('http').Server(app); // tạo máy chủ HTTP sử dụng express
 const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:3000',
@@ -25,9 +27,13 @@ const io = require('socket.io')(server, {
 server.listen(port); // khởi động máy chủ lắng nghe các kêt nối đến cổng
 
 ////////MQTT///
-var client = mqtt.connect('mqtt://localhost');// tạo 1 kênh kết nốt MQTT tới máy chủ có ip
+var client = mqtt.connect('mqtt://localhost', {
+    username: 'DongND',
+    password: 'dong1808'
+}); // tạo 1 kênh kết nốt MQTT tới máy chủ 
+
 client.on('connect', function () {
-    console.log('mqtt connected');// in thông báo mqtt thiết lập thành công
+    console.log('mqtt connected'); // in thông báo mqtt thiết lập thành công
     client.subscribe('sensor'); //phần cứng gửi dữ liệu lên, bên này sub vào kênh sensor
 });
 
@@ -41,14 +47,13 @@ client.on('message', function (topic, message) {
     var temp_data = Math.floor(Math.round(data.temperature));
     var humi_data = data.humidity;
     var light_data = Math.floor(Math.round(data.light));
-    // var db_data = data.db;
-    // var light_data = data.light;
+    var db_data = data.db;
 
     //cho giá trị vào bảng data trên mysql
     var sql = 'INSERT INTO sensordata (temp, humi, light) VALUES (' +
-          temp_data + ' , ' +
-          humi_data + ' , ' +
-          light_data + ')';
+        temp_data + ' , ' +
+        humi_data + ' , ' +
+        light_data + ')';
 
     dbConn.query(sql, function (err, result) {
         // if (err) throw err;
@@ -56,6 +61,7 @@ client.on('message', function (topic, message) {
             ' temp : ' + temp_data +
             ' ,humi: ' + humi_data +
             ', light: ' + light_data +
+            ', db: ' + db_data +
             ' ',
         );
     });
@@ -66,7 +72,7 @@ client.on('message', function (topic, message) {
     io.emit('relay_1', state_1);
     io.emit('relay_2', state_2);
     io.emit('relay_3', state_3);
-    // io.emit('db', db_data);
+    io.emit('db', db_data);
 
     // console.log(db_data);
 
@@ -124,3 +130,45 @@ const sensor = require('./routes/Sensordata');
 const relay = require('./routes/Relay');
 app.use('/api/sensordata', sensor);
 app.use('/api/relay', relay);
+
+// Route xử lý yêu cầu POST đến /api/sensordata
+app.post('/api/sensordata', (req, res) => {
+    // Truy xuất dữ liệu từ yêu cầu POST
+    const sensorData = req.body;
+
+    // Xử lý dữ liệu (ví dụ: lưu vào cơ sở dữ liệu)
+    var sql = 'INSERT INTO sensordata (temp, humi, light) VALUES (?, ?, ?)';
+    dbConn.query(sql, [sensorData.temp, sensorData.humi, sensorData.light], function (err, result) {
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+        console.log('Data inserted:', sensorData);
+        res.status(200).json({
+            message: 'Sensor data received',
+            data: sensorData
+        });
+    });
+});
+
+// Route xử lý yêu cầu POST đến /api/relay
+app.post('/api/relay', (req, res) => {
+    // Truy xuất dữ liệu từ yêu cầu POST
+    const relayData = req.body;
+
+    // Xử lý dữ liệu (ví dụ: lưu vào cơ sở dữ liệu)
+    var sql = 'INSERT INTO relay (relay_id, state) VALUES (?, ?)';
+    dbConn.query(sql, [relayData.relay_id, relayData.state], function (err, result) {
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+        console.log('Relay data inserted:', relayData);
+        res.status(200).json({
+            message: 'Relay data received',
+            data: relayData
+        });
+    });
+});

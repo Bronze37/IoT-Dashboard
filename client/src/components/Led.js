@@ -19,15 +19,15 @@ const Led = ({
     useEffect(() => {
         // Listen for updates from the server
         socket.on('relay_1', (data_received) => {
-            setIsCheckedLight(!data_received);
+            setIsCheckedLight(data_received);
         });
 
         socket.on('relay_3', (data_received) => {
-            setIsCheckedAirCon(!data_received);
+            setIsCheckedAirCon(data_received);
         });
 
         socket.on('relay_2', (data_received) => {
-            setIsCheckedFan(!data_received);
+            setIsCheckedFan(data_received);
             
         });
 

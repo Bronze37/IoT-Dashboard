@@ -35,10 +35,10 @@ function DataChart({
             const anhsang = data_received;
             setLight(anhsang);
         });
-        // socket.on('db', (data_received) => {
-        //     const dobui = data_received;
-        //     setDb(dobui);
-        // });
+        socket.on('db', (data_received) => {
+            const dobui = data_received;
+            setDb(dobui);
+        });
         // Clean up the socket when the component unmounts
         return () => {
             socket.disconnect();
@@ -56,6 +56,14 @@ function DataChart({
                 yAxisID: 'y-left',
                 lineTension: 0.3,
             },
+            // {
+            //     label: 'Độ bụi',
+            //     data: db,
+            //     borderColor: 'gray',
+            //     backgroundColor: 'rgba(170, 170, 170, 0.2)',
+            //     yAxisID: 'y-left',
+            //     lineTension: 0.3,
+            // },
             {
                 label: 'Độ ẩm',
                 data: humi,
