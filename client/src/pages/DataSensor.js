@@ -19,12 +19,13 @@ const DataSensor = ({
     const [pageSize, setPageSize] = useState(15);
     const [filter, setFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     const formatISO8601ToDateTime = (isoString) => {
         const date = new Date(isoString);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Thêm 0 đầu tiên nếu tháng < 10
-        const day = String(date.getDate()).padStart(2, '0'); // Thêm 0 đầu tiên nếu ngày < 10
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
@@ -54,9 +55,21 @@ const DataSensor = ({
                 );
         }
     });
+
+    const sortedData = [...filteredData].sort((a, b) => {
+        if (sortConfig.key) {
+            if (sortConfig.direction === 'ascending') {
+                return a[sortConfig.key] > b[sortConfig.key] ? 1 : -1;
+            } else {
+                return a[sortConfig.key] < b[sortConfig.key] ? 1 : -1;
+            }
+        }
+        return 0;
+    });
+
     const lastIndex = currentPage * pageSize;
     const firstIndex = lastIndex - pageSize;
-    const records = filteredData.slice(firstIndex, lastIndex);
+    const records = sortedData.slice(firstIndex, lastIndex);
     const npage = Math.ceil(filteredData.length / pageSize);
     const numbers = [...Array(npage + 1).keys()].slice(1);
     const handlePageSizeChange = (e) => {
@@ -68,9 +81,20 @@ const DataSensor = ({
         setCurrentPage(1);
     }, [searchQuery]);
 
-    
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
 
-    // console.log(dataSensor)
+    const getSortIcon = (key) => {
+        if (sortConfig.key === key) {
+            return sortConfig.direction === 'ascending' ? '▲' : '▼';
+        }
+        return '▲';
+    };
 
     return (
         <div>
@@ -126,139 +150,138 @@ const DataSensor = ({
 
                 <br></br>
 
-                    <table className="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th className='flex justify-center'>
-                                    Temp
-                                </th>
-                                <th>Humi</th>
-                                <th>Light</th>
-                                <th>Time</th>
+                <table className="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th className='flex justify-center'>
+                                Temp
+                                <button 
+                                    onClick={() => requestSort('temp')} 
+                                    style={{ marginLeft: '5px' }}
+                                >
+                                    {getSortIcon('temp')}
+                                </button>
+                            </th>
+                            <th>
+                                Humi
+                                <button 
+                                    onClick={() => requestSort('humi')} 
+                                    style={{ marginLeft: '5px' }}
+                                >
+                                    {getSortIcon('humi')}
+                                </button>
+                            </th>
+                            <th>
+                                Light
+                                <button 
+                                    onClick={() => requestSort('light')} 
+                                    style={{ marginLeft: '5px' }}
+                                >
+                                    {getSortIcon('light')}
+                                </button>
+                            </th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {records.map((sensor) => (
+                            <tr key={sensor.id}>
+                                <td>{sensor.id}</td>
+                                <td>{sensor.temp}</td>
+                                <td>{sensor.humi}</td>
+                                <td>{sensor.light}</td>
+                                <td>
+                                    {formatISO8601ToDateTime(sensor.date)}
+                                </td>
                             </tr>
-                        </thead>
+                        ))}
+                    </tbody>
+                </table>
 
-                        <tbody>
-                            {records.map((sensor) => (
-                                <tr key={sensor.id}>
-                                    <td>{sensor.id}</td>
-                                    <td>{sensor.temp}</td>
-                                    <td>{sensor.humi}</td>
-                                    <td>{sensor.light}</td>
-                                    <td>
-                                        {formatISO8601ToDateTime(sensor.date)}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                <nav className="flex justify-end mr-[-20px]">
+                    <ul className="pagination">
+                        {numbers.map((n, i) => {
+                            const pagesToShow = 5;
+                            const pagesBeforeCurrent = Math.floor(pagesToShow / 2);
+                            const pagesAfterCurrent = pagesToShow - pagesBeforeCurrent;
 
-                    <nav className="flex justify-end mr-[-20px]">
-                        <ul className="pagination">
-                            {numbers.map((n, i) => {
-                                // Tính toán số trang cần hiển thị trước và sau trang hiện tại
-                                const pagesToShow = 5; // Số trang liền kề (không tính trang hiện tại)
-                                const pagesBeforeCurrent = Math.floor(
-                                    pagesToShow / 2,
+                            if (n === 1) {
+                                return (
+                                    <li
+                                        className={`page-item ${currentPage === n ? 'active' : ''}`}
+                                        key={i}
+                                    >
+                                        <a
+                                            href="#"
+                                            className="page-link"
+                                            onClick={() => changeCPage(n)}
+                                        >
+                                            {n}
+                                        </a>
+                                    </li>
                                 );
-                                const pagesAfterCurrent =
-                                    pagesToShow - pagesBeforeCurrent;
+                            }
 
-                                if (n === 1) {
-                                    // Hiển thị trang đầu tiên
-                                    return (
-                                        <li
-                                            className={`page-item ${
-                                                currentPage === n
-                                                    ? 'active'
-                                                    : ''
-                                            }`}
-                                            key={i}
+                            if (n === npage) {
+                                return (
+                                    <li
+                                        className={`page-item ${currentPage === n ? 'active' : ''}`}
+                                        key={i}
+                                    >
+                                        <a
+                                            href="#"
+                                            className="page-link"
+                                            onClick={() => changeCPage(n)}
                                         >
-                                            <a
-                                                href="#"
-                                                className="page-link"
-                                                onClick={() => changeCPage(n)}
-                                            >
-                                                {n}
-                                            </a>
-                                        </li>
-                                    );
-                                }
+                                            {n}
+                                        </a>
+                                    </li>
+                                );
+                            }
 
-                                if (n === npage) {
-                                    // Hiển thị trang cuối cùng
-                                    return (
-                                        <li
-                                            className={`page-item ${
-                                                currentPage === n
-                                                    ? 'active'
-                                                    : ''
-                                            }`}
-                                            key={i}
+                            if (
+                                n >= currentPage - pagesBeforeCurrent &&
+                                n <= currentPage + pagesAfterCurrent &&
+                                n !== 1 &&
+                                n !== npage
+                            ) {
+                                return (
+                                    <li
+                                        className={`page-item ${currentPage === n ? 'active' : ''}`}
+                                        key={i}
+                                    >
+                                        <a
+                                            href="#"
+                                            className="page-link"
+                                            onClick={() => changeCPage(n)}
                                         >
-                                            <a
-                                                href="#"
-                                                className="page-link"
-                                                onClick={() => changeCPage(n)}
-                                            >
-                                                {n}
-                                            </a>
-                                        </li>
-                                    );
-                                }
+                                            {n}
+                                        </a>
+                                    </li>
+                                );
+                            }
 
-                                if (
-                                    n >= currentPage - pagesBeforeCurrent &&
-                                    n <= currentPage + pagesAfterCurrent &&
-                                    n !== 1 &&
-                                    n !== npage
-                                ) {
-                                    // Hiển thị trang hiện tại và các trang liền kề
-                                    return (
-                                        <li
-                                            className={`page-item ${
-                                                currentPage === n
-                                                    ? 'active'
-                                                    : ''
-                                            }`}
-                                            key={i}
-                                        >
-                                            <a
-                                                href="#"
-                                                className="page-link"
-                                                onClick={() => changeCPage(n)}
-                                            >
-                                                {n}
-                                            </a>
-                                        </li>
-                                    );
-                                }
+                            if (
+                                (n === 2 && currentPage > pagesBeforeCurrent + 1) ||
+                                (n === npage - 1 && currentPage < npage - pagesAfterCurrent)
+                            ) {
+                                return (
+                                    <li className="page-item" key={i}>
+                                        <span className="page-link">
+                                            ...
+                                        </span>
+                                    </li>
+                                );
+                            }
 
-                                if (
-                                    (n === 2 &&
-                                        currentPage > pagesBeforeCurrent + 1) ||
-                                    (n === npage - 1 &&
-                                        currentPage < npage - pagesAfterCurrent)
-                                ) {
-                                    // Hiển thị dấu chấm ba (...) nếu cần
-                                    return (
-                                        <li className="page-item" key={i}>
-                                            <span className="page-link">
-                                                ...
-                                            </span>
-                                        </li>
-                                    );
-                                }
-
-                                return null; // Ẩn các ô pagination khác
-                            })}
-                        </ul>
-                    </nav>
-                </div>
+                            return null;
+                        })}
+                    </ul>
+                </nav>
             </div>
-        
+        </div>
     );
 
     function changeCPage(id) {

@@ -37,25 +37,33 @@ const Profile = () => {
 
                                 <div className="mb-2 text-blueGray-600 mt-10">
                                     <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                                    Công nghệ thông tin
+                                    Công nghệ phần mềm
                                 </div>
                                 <div className="mb-2 text-blueGray-600">
                                     <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                                     Học viện Công nghệ Bưu chính Viễn thông
                                 </div>
                             </div>
-                            <div className="flex flex-col justify-start  mt-10 py-10 border-t border-blueGray-200 text-center">
-                                <div className="flex justify-center">
-                                    <div className="w-full lg:w-9/12 px-4">
-                                        <i className="fa fa-envelope mr-2 text-lg text-blueGray-400"></i>
-                                        ndinhdong.1808@gmail.com
-                                    </div>
+                            <div className="flex flex-row justify-evenly mt-10 py-10 border-t border-blueGray-200 text-center">
+                                <div className="mb-2 text-blueGray-600 flex justify-center items-center">
+                                    
+                                    <a href="https://drive.google.com/your-drive-link" target="_blank" rel="noopener noreferrer">
+                                        Google Drive
+                                    </a>
                                 </div>
-                                <div className="flex justify-center ml-[-100px]">
-                                    <div className="w-full lg:w-9/12 px-4">
-                                        <i className="fa fa-phone-square mr-2 text-lg text-blueGray-400"></i>
-                                        0384617563
-                                    </div>
+                                <div className="mb-2 text-blueGray-600 flex justify-center items-center">
+                                    
+                                    <a href = "https://github.com/Bronze37/IoT-Dashboard"
+                                    target = "_blank"
+                                    rel = "noopener noreferrer" >
+                                        GitHub
+                                    </a>
+                                </div>
+                                <div className="mb-2 text-blueGray-600 flex justify-center items-center">
+                                    
+                                    <a href="https://your-report-link" target="_blank" rel="noopener noreferrer">
+                                        Báo cáo
+                                    </a>
                                 </div>
                             </div>
                         </div>

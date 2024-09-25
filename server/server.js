@@ -61,7 +61,7 @@ client.on('message', function (topic, message) {
             ' temp : ' + temp_data +
             ' ,humi: ' + humi_data +
             ', light: ' + light_data +
-            ', db: ' + db_data +
+            // ', db: ' + db_data +
             ' ',
         );
     });
