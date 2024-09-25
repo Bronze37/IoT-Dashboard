@@ -57,7 +57,7 @@ const Dashboard = ({
             if (relay1 !== null && relay1 !== data_received) {
                 toast(`Đèn đã được ${data_received == '1' ? 'bật' : 'tắt'}`, {
                     autoClose: 5000,
-                    position: "bottom-right"
+                    position: "bottom-left"
                 });
             }
             setRelay1(data_received);
@@ -67,7 +67,7 @@ const Dashboard = ({
             if (relay3 !== null && relay3 !== data_received) {
                 toast(`Điều hòa đã được ${data_received == '1' ? 'bật' : 'tắt'}`, {
                     autoClose: 5000,
-                    position: "bottom-right"
+                    position: "bottom-left"
                 });
             }
             setRelay3(data_received);
@@ -77,7 +77,7 @@ const Dashboard = ({
             if (relay2 !== null && relay2 !== data_received) {
                 toast(`Quạt đã được ${data_received == '1' ? 'bật' : 'tắt'}`, {
                     autoClose: 5000,
-                    position: "bottom-right"
+                    position: "bottom-left"
                 });
             }
             setRelay2(data_received);
