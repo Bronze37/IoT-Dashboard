@@ -43,6 +43,8 @@ const DataSensor = ({
                 return sensor.humi.toString().includes(searchQuery);
             case 'light':
                 return sensor.light.toString().includes(searchQuery);
+            case 'db':
+                return sensor.db.toString().includes(searchQuery);
             case 'time':
                 return formattedDate.includes(searchQuery);
             case 'all':
@@ -51,6 +53,7 @@ const DataSensor = ({
                     sensor.temp.toString().includes(searchQuery) ||
                     sensor.humi.toString().includes(searchQuery) ||
                     sensor.light.toString().includes(searchQuery) ||
+                    sensor.db.toString().includes(searchQuery) ||
                     formattedDate.includes(searchQuery)
                 );
         }
@@ -96,6 +99,27 @@ const DataSensor = ({
         return '▲';
     };
 
+    const getCurrentDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const countHighDustLevelsInDay = (dateString) => {
+        const targetDate = new Date(dateString);
+        return dataSensor.filter(sensor => {
+            const sensorDate = new Date(sensor.date);
+            return sensor.db > 80 &&
+                sensorDate.getFullYear() === targetDate.getFullYear() &&
+                sensorDate.getMonth() === targetDate.getMonth() &&
+                sensorDate.getDate() === targetDate.getDate();
+        }).length;
+    };
+
+    const targetDate = getCurrentDate(); 
+
     return (
         <div>
             <strong className="h-[90px] border-b mr-[100px] flex justify-start items-center">
@@ -106,20 +130,6 @@ const DataSensor = ({
 
             <div className="mt-[20px] mr-[100px]">
                 <div className="row">
-                    <div className="col-md-4">
-                        <label htmlFor="pageSize">Page Size:</label>
-                        <select
-                            id="pageSize"
-                            value={pageSize}
-                            onChange={handlePageSizeChange}
-                            className="form-control"
-                        >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={15}>15</option>
-                            <option value={20}>20</option>
-                        </select>
-                    </div>
                     <div className="col-md-4">
                         <label htmlFor="filter">Filter:</label>
                         <select
@@ -132,6 +142,7 @@ const DataSensor = ({
                             <option value="temp">Temp</option>
                             <option value="humi">Humi</option>
                             <option value="light">Light</option>
+                            <option value="db">DB</option>
                             <option value="time">Time</option>
                         </select>
                     </div>
@@ -156,8 +167,8 @@ const DataSensor = ({
                             <th>ID</th>
                             <th className='flex justify-center'>
                                 Temp
-                                <button 
-                                    onClick={() => requestSort('temp')} 
+                                <button
+                                    onClick={() => requestSort('temp')}
                                     style={{ marginLeft: '5px' }}
                                 >
                                     {getSortIcon('temp')}
@@ -165,8 +176,8 @@ const DataSensor = ({
                             </th>
                             <th>
                                 Humi
-                                <button 
-                                    onClick={() => requestSort('humi')} 
+                                <button
+                                    onClick={() => requestSort('humi')}
                                     style={{ marginLeft: '5px' }}
                                 >
                                     {getSortIcon('humi')}
@@ -174,11 +185,20 @@ const DataSensor = ({
                             </th>
                             <th>
                                 Light
-                                <button 
-                                    onClick={() => requestSort('light')} 
+                                <button
+                                    onClick={() => requestSort('light')}
                                     style={{ marginLeft: '5px' }}
                                 >
                                     {getSortIcon('light')}
+                                </button>
+                            </th>
+                            <th>
+                                DB
+                                <button
+                                    onClick={() => requestSort('db')}
+                                    style={{ marginLeft: '5px' }}
+                                >
+                                    {getSortIcon('db')}
                                 </button>
                             </th>
                             <th>Time</th>
@@ -192,6 +212,7 @@ const DataSensor = ({
                                 <td>{sensor.temp}</td>
                                 <td>{sensor.humi}</td>
                                 <td>{sensor.light}</td>
+                                <td>{sensor.db}</td>
                                 <td>
                                     {formatISO8601ToDateTime(sensor.date)}
                                 </td>
@@ -200,86 +221,107 @@ const DataSensor = ({
                     </tbody>
                 </table>
 
-                <nav className="flex justify-end mr-[-20px]">
-                    <ul className="pagination">
-                        {numbers.map((n, i) => {
-                            const pagesToShow = 5;
-                            const pagesBeforeCurrent = Math.floor(pagesToShow / 2);
-                            const pagesAfterCurrent = pagesToShow - pagesBeforeCurrent;
+                <div className="d-flex justify-content-between align-items-center">
+                    <div className="col-md-2">
+                        <div className="d-flex">
+                            <label htmlFor="pageSize">Page Size:</label>
+                            <select
+                                id="pageSize"
+                                value={pageSize}
+                                onChange={handlePageSizeChange}
+                                className="form-control"
+                            >
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={15}>15</option>
+                                <option value={20}>20</option>
+                            </select>
+                        </div>
+                    </div>
+                    <nav className="flex justify-end mr-[-20px]">
+                        <ul className="pagination">
+                            {numbers.map((n, i) => {
+                                const pagesToShow = 5;
+                                const pagesBeforeCurrent = Math.floor(pagesToShow / 2);
+                                const pagesAfterCurrent = pagesToShow - pagesBeforeCurrent;
 
-                            if (n === 1) {
-                                return (
-                                    <li
-                                        className={`page-item ${currentPage === n ? 'active' : ''}`}
-                                        key={i}
-                                    >
-                                        <a
-                                            href="#"
-                                            className="page-link"
-                                            onClick={() => changeCPage(n)}
+                                if (n === 1) {
+                                    return (
+                                        <li
+                                            className={`page-item ${currentPage === n ? 'active' : ''}`}
+                                            key={i}
                                         >
-                                            {n}
-                                        </a>
-                                    </li>
-                                );
-                            }
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
 
-                            if (n === npage) {
-                                return (
-                                    <li
-                                        className={`page-item ${currentPage === n ? 'active' : ''}`}
-                                        key={i}
-                                    >
-                                        <a
-                                            href="#"
-                                            className="page-link"
-                                            onClick={() => changeCPage(n)}
+                                if (n === npage) {
+                                    return (
+                                        <li
+                                            className={`page-item ${currentPage === n ? 'active' : ''}`}
+                                            key={i}
                                         >
-                                            {n}
-                                        </a>
-                                    </li>
-                                );
-                            }
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
 
-                            if (
-                                n >= currentPage - pagesBeforeCurrent &&
-                                n <= currentPage + pagesAfterCurrent &&
-                                n !== 1 &&
-                                n !== npage
-                            ) {
-                                return (
-                                    <li
-                                        className={`page-item ${currentPage === n ? 'active' : ''}`}
-                                        key={i}
-                                    >
-                                        <a
-                                            href="#"
-                                            className="page-link"
-                                            onClick={() => changeCPage(n)}
+                                if (
+                                    n >= currentPage - pagesBeforeCurrent &&
+                                    n <= currentPage + pagesAfterCurrent &&
+                                    n !== 1 &&
+                                    n !== npage
+                                ) {
+                                    return (
+                                        <li
+                                            className={`page-item ${currentPage === n ? 'active' : ''}`}
+                                            key={i}
                                         >
-                                            {n}
-                                        </a>
-                                    </li>
-                                );
-                            }
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
 
-                            if (
-                                (n === 2 && currentPage > pagesBeforeCurrent + 1) ||
-                                (n === npage - 1 && currentPage < npage - pagesAfterCurrent)
-                            ) {
-                                return (
-                                    <li className="page-item" key={i}>
-                                        <span className="page-link">
-                                            ...
-                                        </span>
-                                    </li>
-                                );
-                            }
+                                if (
+                                    (n === 2 && currentPage > pagesBeforeCurrent + 1) ||
+                                    (n === npage - 1 && currentPage < npage - pagesAfterCurrent)
+                                ) {
+                                    return (
+                                        <li className="page-item" key={i}>
+                                            <span className="page-link">
+                                                ...
+                                            </span>
+                                        </li>
+                                    );
+                                }
 
-                            return null;
-                        })}
-                    </ul>
-                </nav>
+                                return null;
+                            })}
+                        </ul>
+                    </nav>
+                </div>
+                <div>
+                    <p>Số lần bụi lớn hơn 80% trong ngày: {countHighDustLevelsInDay(targetDate)}</p>
+                </div>
             </div>
         </div>
     );

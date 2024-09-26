@@ -43,6 +43,27 @@ const ActionHistory = ({ relay, setRelay, currentPage1, setCurrentPage1 }) => {
         setCurrentPage1(1);
     };
 
+    const getCurrentDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const countFanOnInDay = (dateString) => {
+        const targetDate = new Date(dateString);
+        return relay.filter(sensor => {
+            const sensorDate = new Date(sensor.date);
+            return sensor.state === 'ON' && // Assuming 'ON' indicates the fan was turned on
+                sensorDate.getFullYear() === targetDate.getFullYear() &&
+                sensorDate.getMonth() === targetDate.getMonth() &&
+                sensorDate.getDate() === targetDate.getDate();
+        }).length;
+    };
+
+    const targetDate = getCurrentDate(); // Get today's date
+
     return (
         <div>
             <strong className="h-[90px] border-b mr-[100px] flex justify-start items-center">
@@ -53,21 +74,6 @@ const ActionHistory = ({ relay, setRelay, currentPage1, setCurrentPage1 }) => {
 
             <div className="mt-[20px] mr-[100px]">
                 <div className="row">
-                    <div className="col-md-4">
-                        <label htmlFor="pageSize">Page Size:</label>
-                        <select
-                            id="pageSize"
-                            value={pageSize}
-                            onChange={handlePageSizeChange}
-                            className="form-control"
-                        >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={15}>15</option>
-                            <option value={20}>20</option>
-                        </select>
-                    </div>
-
                     <div className="col-md-4">
                         <label htmlFor="searchQuery">Search by Date:</label>
                         <input
@@ -105,102 +111,120 @@ const ActionHistory = ({ relay, setRelay, currentPage1, setCurrentPage1 }) => {
                         ))}
                     </tbody>
                 </table>
-                
 
-                <nav className="flex justify-end mr-[-20px]">
-                    <ul className="pagination">
-                        {numbers.map((n, i) => {
-                            // Tính toán số trang cần hiển thị trước và sau trang hiện tại
-                            const pagesToShow = 5; // Số trang liền kề (không tính trang hiện tại)
-                            const pagesBeforeCurrent = Math.floor(
-                                pagesToShow / 2,
-                            );
-                            const pagesAfterCurrent =
-                                pagesToShow - pagesBeforeCurrent;
+                <div className="d-flex justify-content-between align-items-center">
+                    <div className="col-md-2 flex">
+                        <label htmlFor="pageSize">Page Size:</label>
+                        <select
+                            id="pageSize"
+                            value={pageSize}
+                            onChange={handlePageSizeChange}
+                            className="form-control"
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                            <option value={20}>20</option>
+                        </select>
+                    </div>
+                    <nav className="flex justify-end mr-[-20px]">
+                        <ul className="pagination">
+                            {numbers.map((n, i) => {
+                                // Tính toán số trang cần hiển thị trước và sau trang hiện tại
+                                const pagesToShow = 5; // Số trang liền kề (không tính trang hiện tại)
+                                const pagesBeforeCurrent = Math.floor(
+                                    pagesToShow / 2,
+                                );
+                                const pagesAfterCurrent =
+                                    pagesToShow - pagesBeforeCurrent;
 
-                            if (n === 1) {
-                                // Hiển thị trang đầu tiên
-                                return (
-                                    <li
-                                        className={`page-item ${
-                                            currentPage1 === n ? 'active' : ''
-                                        }`}
-                                        key={i}
-                                    >
-                                        <a
-                                            href="#"
-                                            className="page-link"
-                                            onClick={() => changeCPage(n)}
+                                if (n === 1) {
+                                    // Hiển thị trang đầu tiên
+                                    return (
+                                        <li
+                                            className={`page-item ${
+                                                currentPage1 === n ? 'active' : ''
+                                            }`}
+                                            key={i}
                                         >
-                                            {n}
-                                        </a>
-                                    </li>
-                                );
-                            }
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
 
-                            if (n === npage) {
-                                // Hiển thị trang cuối cùng
-                                return (
-                                    <li
-                                        className={`page-item ${
-                                            currentPage1 === n ? 'active' : ''
-                                        }`}
-                                        key={i}
-                                    >
-                                        <a
-                                            href="#"
-                                            className="page-link"
-                                            onClick={() => changeCPage(n)}
+                                if (n === npage) {
+                                    // Hiển thị trang cuối cùng
+                                    return (
+                                        <li
+                                            className={`page-item ${
+                                                currentPage1 === n ? 'active' : ''
+                                            }`}
+                                            key={i}
                                         >
-                                            {n}
-                                        </a>
-                                    </li>
-                                );
-                            }
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
 
-                            if (
-                                n >= currentPage1 - pagesBeforeCurrent &&
-                                n <= currentPage1 + pagesAfterCurrent &&
-                                n !== 1 &&
-                                n !== npage
-                            ) {
-                                // Hiển thị trang hiện tại và các trang liền kề
-                                return (
-                                    <li
-                                        className={`page-item ${
-                                            currentPage1 === n ? 'active' : ''
-                                        }`}
-                                        key={i}
-                                    >
-                                        <a
-                                            href="#"
-                                            className="page-link"
-                                            onClick={() => changeCPage(n)}
+                                if (
+                                    n >= currentPage1 - pagesBeforeCurrent &&
+                                    n <= currentPage1 + pagesAfterCurrent &&
+                                    n !== 1 &&
+                                    n !== npage
+                                ) {
+                                    // Hiển thị trang hiện tại và các trang liền kề
+                                    return (
+                                        <li
+                                            className={`page-item ${
+                                                currentPage1 === n ? 'active' : ''
+                                            }`}
+                                            key={i}
                                         >
-                                            {n}
-                                        </a>
-                                    </li>
-                                );
-                            }
+                                            <a
+                                                href="#"
+                                                className="page-link"
+                                                onClick={() => changeCPage(n)}
+                                            >
+                                                {n}
+                                            </a>
+                                        </li>
+                                    );
+                                }
 
-                            if (
-                                (n === 2 &&
-                                    currentPage1 > pagesBeforeCurrent + 1) ||
-                                (n === npage - 1 &&
-                                    currentPage1 < npage - pagesAfterCurrent)
-                            ) {
-                                // Hiển thị dấu chấm ba (...) nếu cần
-                                return (
-                                    <li className="page-item" key={i}>
-                                        <span className="page-link">...</span>
-                                    </li>
-                                );
-                            }
+                                if (
+                                    (n === 2 &&
+                                        currentPage1 > pagesBeforeCurrent + 1) ||
+                                    (n === npage - 1 &&
+                                        currentPage1 < npage - pagesAfterCurrent)
+                                ) {
+                                    // Hiển thị dấu chấm ba (...) nếu cần
+                                    return (
+                                        <li className="page-item" key={i}>
+                                            <span className="page-link">...</span>
+                                        </li>
+                                    );
+                                }
 
-                            return null; // Ẩn các ô pagination khác
-                        })}
-                    </ul>
-                </nav>
+                                return null; // Ẩn các ô pagination khác
+                            })}
+                        </ul>
+                    </nav>
+                </div>
+                <div>
+                    <p>Số lần bật quạt trong một ngày: {countFanOnInDay(targetDate)}</p>
+                </div>
             </div>
         </div>
     );

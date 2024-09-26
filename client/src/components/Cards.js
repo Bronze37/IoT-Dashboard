@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import nhietDo from '../img/nhietdo.png';
 import humidity from '../img/humidity.png';
 import sun from '../img/sun.png';
@@ -22,8 +22,26 @@ const Cards = ({
     dbCard, 
     setDbCard,
     bgDb,
-    setBgDb
+    setBgDb,
+    isCheckedFan,
+    setIsCheckedFan,
 }) => {
+    const [relay2, setRelay2] = useState(null);
+
+    const socket = io('http://localhost:8688');
+
+    const handleTurnOnFan = () => {
+        if (relay2 !== 1) {
+            socket.emit('control_relay_2', 1);
+        }
+    };
+
+    const handleTurnOffFan = () => {
+        if (relay2 !== 1) {
+            socket.emit('control_relay_2', 0);
+        }
+    };
+
     useEffect(() => {
         const socket = io('http://localhost:8688');
         socket.on('temp', (data) => {
@@ -55,17 +73,39 @@ const Cards = ({
             } else {
                 setBgDb('#AAAAAA');
             }
+            if (data > 80) {
+                handleTurnOnFan();
+                setBgDb('#FF0000');
+            }
+            if (data < 50) {
+                handleTurnOffFan();
+            }
         });
         socket.on('light', (data) => {
             setLightCard(data);
-            if (data <= 25) {
-                setBgLight('#A0A0A0');
+            if (data <= 50) {
+                setBgLight('#A0A0A0'); // Màu xám nhạt
             } else if (data <= 100) {
-                setBgLight('lightgoldenrodyellow');
+                setBgLight('#FFFFE0'); // Màu vàng nhạt (light yellow)
+            } else if (data <= 150) {
+                setBgLight('#FFFF99'); // Màu vàng nhạt hơn (light goldenrod yellow)
+            } else if (data <= 200) {
+                setBgLight('#FFFF66'); // Màu vàng (yellow)
+            } else if (data <= 250) {
+                setBgLight('#FFFF33'); // Màu vàng đậm hơn (gold)
+            } else if (data <= 300) {
+                setBgLight('#FFFF00'); // Màu vàng đậm (golden yellow)
+            } else if (data <= 350) {
+                setBgLight('#FFCC00'); // Màu vàng cam (orange yellow)
+            } else if (data <= 400) {
+                setBgLight('#FF9900'); // Màu cam (orange)
+            } else if (data <= 450) {
+                setBgLight('#FF6600'); // Màu cam đậm (dark orange)
             } else {
-                setBgLight('yellow');
+                setBgLight('#FF3300'); // Màu cam đỏ (orange red)
             }
         });
+        
 
         return () => {
             // Cleanup: Đóng kết nối socket khi component unmount
@@ -120,7 +160,7 @@ const Cards = ({
                 </div>
             </div>
 
-            {/* <div
+            <div
                 style={{ backgroundColor: bgDb }}
                 className="flex w-[20%] justify-around items-center rounded-xl  bg-clip-border text-gray-700 shadow-md border"
             >
@@ -131,7 +171,7 @@ const Cards = ({
                         {dbCard} %
                     </h5>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };

@@ -50,10 +50,11 @@ client.on('message', function (topic, message) {
     var db_data = data.db;
 
     //cho giá trị vào bảng data trên mysql
-    var sql = 'INSERT INTO sensordata (temp, humi, light) VALUES (' +
+    var sql = 'INSERT INTO sensordata (temp, humi, light, db) VALUES (' +
         temp_data + ' , ' +
         humi_data + ' , ' +
-        light_data + ')';
+        light_data + ' , ' +
+        db_data + ')';
 
     dbConn.query(sql, function (err, result) {
         // if (err) throw err;
@@ -61,7 +62,7 @@ client.on('message', function (topic, message) {
             ' temp : ' + temp_data +
             ' ,humi: ' + humi_data +
             ', light: ' + light_data +
-            // ', db: ' + db_data +
+            ', db: ' + db_data +
             ' ',
         );
     });
@@ -137,8 +138,8 @@ app.post('/api/sensordata', (req, res) => {
     const sensorData = req.body;
 
     // Xử lý dữ liệu (ví dụ: lưu vào cơ sở dữ liệu)
-    var sql = 'INSERT INTO sensordata (temp, humi, light) VALUES (?, ?, ?)';
-    dbConn.query(sql, [sensorData.temp, sensorData.humi, sensorData.light], function (err, result) {
+    var sql = 'INSERT INTO sensordata (temp, humi, light, db) VALUES (?, ?, ?, ?)';
+    dbConn.query(sql, [sensorData.temp, sensorData.humi, sensorData.light, sensorData.db], function (err, result) {
         if (err) {
             return res.status(500).json({
                 error: err.message

@@ -56,14 +56,14 @@ function DataChart({
                 yAxisID: 'y-left',
                 lineTension: 0.3,
             },
-            // {
-            //     label: 'Độ bụi',
-            //     data: db,
-            //     borderColor: 'gray',
-            //     backgroundColor: 'rgba(170, 170, 170, 0.2)',
-            //     yAxisID: 'y-left',
-            //     lineTension: 0.3,
-            // },
+            {
+                label: 'Độ bụi',
+                data: db,
+                borderColor: 'gray',
+                backgroundColor: 'rgba(170, 170, 170, 0.2)',
+                yAxisID: 'y-left',
+                lineTension: 0.3,
+            },
             {
                 label: 'Độ ẩm',
                 data: humi,

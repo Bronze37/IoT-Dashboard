@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Fan_off from '../img/fan_off.png';
 import Fan_on from '../img/fan_on.gif';
 import Air_on from '../img/air_on.jpg';
@@ -14,63 +14,81 @@ const Led = ({
     isCheckedAirCon,
     setIsCheckedAirCon,
 }) => {
-    const socket = io('http://localhost:8688'); 
+    const socket = io('http://localhost:8688');
+
+    const [relay1, setRelay1] = useState(null);
+    const [relay2, setRelay2] = useState(null);
+    const [relay3, setRelay3] = useState(null);
 
     useEffect(() => {
         // Listen for updates from the server
         socket.on('relay_1', (data_received) => {
-            setIsCheckedLight(data_received);
+            setRelay1(data_received);
+            if (data_received === 0) {
+                setIsCheckedLight(false);
+            } else if (data_received === 1) {
+                setIsCheckedLight(true);
+            }
         });
 
         socket.on('relay_3', (data_received) => {
-            setIsCheckedAirCon(data_received);
+            setRelay3(data_received);
+            if (data_received === 0) {
+                setIsCheckedAirCon(false);
+            } else if (data_received === 1) {
+                setIsCheckedAirCon(true);
+            }
         });
 
         socket.on('relay_2', (data_received) => {
-            setIsCheckedFan(data_received);
-            
+            setRelay2(data_received);
+            if (data_received === 0) {
+                setIsCheckedFan(false);
+            } else if (data_received === 1) {
+                setIsCheckedFan(true);
+            }
         });
 
         // Clean up the socket listener when the component unmounts
         return () => {
             socket.disconnect();
         };
-    }, [socket]);
+    }, []);
 
     const handleTurnOnLight = () => {
-        setIsCheckedLight(true);
-        // Thực hiện các thao tác cần thiết khi bật đèn
-        socket.emit('control_relay_1', 1);
+        if (relay1 !== 1) {
+            socket.emit('control_relay_1', 1);
+        }
     };
 
     const handleTurnOffLight = () => {
-        setIsCheckedLight(false);
-        // Thực hiện các thao tác cần thiết khi tắt đèn
-        socket.emit('control_relay_1', 0);
+        if (relay1 !== 0) {
+            socket.emit('control_relay_1', 0);
+        }
     };
 
     const handleTurnOnAirCon = () => {
-        setIsCheckedAirCon(true);
-        // Thực hiện các thao tác cần thiết khi bật điều hòa
-        socket.emit('control_relay_3', 1);
+        if (relay3 !== 1) {
+            socket.emit('control_relay_3', 1);
+        }
     };
 
     const handleTurnOffAirCon = () => {
-        setIsCheckedAirCon(false);
-        // Thực hiện các thao tác cần thiết khi tắt điều hòa
-        socket.emit('control_relay_3', 0);
+        if (relay3 !== 0) {
+            socket.emit('control_relay_3', 0);
+        }  
     };
 
     const handleTurnOnFan = () => {
-        setIsCheckedFan(true);
-        // Thực hiện các thao tác cần thiết khi bật quạt
-        socket.emit('control_relay_2', 1);
+        if (relay2 !== 1) {
+            socket.emit('control_relay_2', 1);
+        }
     };
 
     const handleTurnOffFan = () => {
-        setIsCheckedFan(false);
-        // Thực hiện các thao tác cần thiết khi tắt quạt
-        socket.emit('control_relay_2', 0);
+        if (relay2 !== 0) {
+            socket.emit('control_relay_2', 0);
+        }
     };
 
     return (

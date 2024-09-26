@@ -3,11 +3,11 @@
 #include <DHT.h>
 
 // Cấu hình WiFi
-const char *ssid = "gì cũng được";
-const char *password = "hehehe123";
+const char *ssid = "Iphone";
+const char *password = "87654321";
 
 // Cấu hình MQTT
-const char *mqtt_server = "192.168.19.105";
+const char *mqtt_server = "172.20.10.5";
 const int mqtt_port = 1883;
 const char *mqtt_topic = "sensor";
 const char *mqtt_topic_relay = "relay";
@@ -199,6 +199,8 @@ void loop()
   float voltage = sensorValue * (3.3 / 4095.0);
   float light = 500 - (voltage / 3.3) * maxLux;
 
+  int db = random(1, 101);
+
   // Tạo JSON để gửi
   String payload = "{\"temperature\": ";
   payload += String(t);
@@ -206,6 +208,8 @@ void loop()
   payload += String(h);
   payload += ", \"light\": ";
   payload += String(light);
+  payload += ", \"db\": ";
+  payload += String(db);
   payload += ", \"state_1\" : ";
   payload += String(state_1);
   payload += ", \"state_2\" : ";

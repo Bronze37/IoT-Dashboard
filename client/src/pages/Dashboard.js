@@ -89,37 +89,37 @@ const Dashboard = ({
         };
     }, [relay1, relay2, relay3]);
 
-    // Hàm cảnh báo nhiệt độ cao
-    useEffect(() => {
-        const now = Date.now();
-        if (temp.some(t => t > 35) && now - lastAlertTime > 30000) {
-            Swal.fire({
-                title: 'Cảnh báo!',
-                text: 'Nhiệt độ cao!',
-                icon: 'warning',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#333333'
-            });
+    // // Hàm cảnh báo nhiệt độ cao
+    // useEffect(() => {
+    //     const now = Date.now();
+    //     if (temp.some(t => t > 35) && now - lastAlertTime > 30000) {
+    //         Swal.fire({
+    //             title: 'Cảnh báo!',
+    //             text: 'Nhiệt độ cao!',
+    //             icon: 'warning',
+    //             confirmButtonText: 'OK',
+    //             confirmButtonColor: '#333333'
+    //         });
             
-            setLastAlertTime(now);
-        }
-    }, [temp, lastAlertTime, setIsCheckedLight, setIsCheckedFan, setIsCheckedAirCon]);
+    //         setLastAlertTime(now);
+    //     }
+    // }, [temp, lastAlertTime, setIsCheckedLight, setIsCheckedFan, setIsCheckedAirCon]);
 
-    // Hàm cảnh báo ánh sáng cao
-    useEffect(() => {
-        const now = Date.now();
-        if (light.some(l => l > 400) && now - lastLightAlertTime > 30000) {
-            Swal.fire({
-                title: 'Cảnh báo!',
-                text: 'Ánh sáng quá mạnh!',
-                icon: 'warning',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#333333'
-            });
+    // // Hàm cảnh báo ánh sáng cao
+    // useEffect(() => {
+    //     const now = Date.now();
+    //     if (light.some(l => l > 400) && now - lastLightAlertTime > 30000) {
+    //         Swal.fire({
+    //             title: 'Cảnh báo!',
+    //             text: 'Ánh sáng quá mạnh!',
+    //             icon: 'warning',
+    //             confirmButtonText: 'OK',
+    //             confirmButtonColor: '#333333'
+    //         });
             
-            setLastLightAlertTime(now);
-        }
-    }, [light, lastLightAlertTime]);
+    //         setLastLightAlertTime(now);
+    //     }
+    // }, [light, lastLightAlertTime]);
 
     return (
         <div>
