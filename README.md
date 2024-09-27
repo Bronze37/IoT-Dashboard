@@ -55,8 +55,23 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 #### Arduino
 
 - Compile và Upload code Arduino lên ESP32
-- Sau khi Upload, chương trình sẽ trả về giao diện như hình
+
+## Giao diện hệ thống Web IoT hoàn chỉnh
 
 <p align="center">
   <img src="./image/image4.png" alt="Final">
+  <br>
+  <em>Giao diện Dashboard
+</p>
+
+<p align="center">
+  <img src="./image/datasensor.png" alt="Final">
+  <br>
+  <em>Giao diện Data Sensor
+</p>
+
+<p align="center">
+  <img src="./image/actionhistory.png" alt="Final">
+  <br>
+  <em>Giao diện Action History
 </p>
