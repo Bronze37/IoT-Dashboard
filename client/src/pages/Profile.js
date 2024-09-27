@@ -44,13 +44,13 @@ const Profile = () => {
                                     Học viện Công nghệ Bưu chính Viễn thông
                                 </div>
                             </div>
-                            <div className="flex flex-col justify-evenly mt-10 py-10 border-t border-blueGray-200 text-center">
+                            <div className="flex flex-row justify-evenly mt-10 py-10 border-t border-blueGray-200 text-center">
                                 <div className="mb-2 text-blueGray-600 flex justify-center items-center">
                                     
                                     <a href = "https://drive.google.com/file/d/1E5zaK7swJmrVZhHKa1w2Rt3Gw0SuzlN8/view?usp=sharing"
                                     target = "_blank"
                                     rel = "noopener noreferrer" >
-                                        Báo cáo: https://drive.google.com/file/d/1E5zaK7swJmrVZhHKa1w2Rt3Gw0SuzlN8/view?usp=sharing
+                                        Báo cáo
                                     </a>
                                 </div>
                                 <div className="mb-2 text-blueGray-600 flex justify-center items-center">
@@ -58,7 +58,7 @@ const Profile = () => {
                                     <a href = "https://github.com/Bronze37/IoT-Dashboard"
                                     target = "_blank"
                                     rel = "noopener noreferrer" >
-                                        Github: https://github.com/Bronze37/IoT-Dashboard
+                                        Github
                                     </a>
                                 </div>
                                 <div className="mb-2 text-blueGray-600 flex justify-center items-center">
@@ -66,7 +66,7 @@ const Profile = () => {
                                     <a a href = "https://drive.google.com/file/d/1iWTAxv2HZH35xV5KcqXiAERZ7OorWjZ-/view?usp=sharing"
                                     target = "_blank"
                                     rel = "noopener noreferrer" >
-                                        API Doc: https://drive.google.com/file/d/1iWTAxv2HZH35xV5KcqXiAERZ7OorWjZ-/view?usp=sharing
+                                        API Doc
                                     </a>
                                 </div>
                             </div>
