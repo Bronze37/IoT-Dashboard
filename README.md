@@ -31,7 +31,10 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 - Mở Command Prompt trong thư mục Server
 - Chạy lệnh `npm start` để khởi động server
 - Sau khi khởi động thì đây là kết quả hiển thị trên Terminal
-![Example Image](./image/image.png)
+
+<p align="center">
+  <img src="./image/image.png" alt="Example Image">
+</p>
 
 #### Frontend (React)
 - Mở Command Prompt trong thư mục Client
