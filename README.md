@@ -1,38 +1,34 @@
-# Project README
+# Web IoT Project
 
-Welcome to the project!
+## Giới thiệu
+Dự án này là một hệ thống IoT web cho phép giám sát và điều khiển các thiết bị phần cứng qua giao thức MQTT. Hệ thống bao gồm:
+- **Backend**: Sử dụng Node.js để xử lý dữ liệu từ các thiết bị IoT.
+- **Frontend**: Sử dụng ReactJS để hiển thị dữ liệu real-time và điều khiển thiết bị.
+- **MQTT**: Sử dụng để pub/sub dữ liệu giữa các thiết bị và hệ thống.
+- **Arduino**: Điều khiển phần cứng như cảm biến và thiết bị qua MQTT.
 
-## Description
+## Yêu cầu hệ thống
+- **Node.js** >= 14.x
+- **npm** >= 6.x hoặc **yarn** >= 1.x
+- **Arduino IDE** nếu sử dụng Arduino để điều khiển phần cứng
+- **MQTT Broker** sử dụng mosquitto
 
-This project is focused on IoT (Internet of Things) development. It aims to explore and implement various IoT technologies and applications.
+## Cài đặt và Chạy Dự án
 
-## Installation
+### 1. Cài đặt các package cần thiết:
 
-To get started with this project, follow these steps:
+#### Backend (Node.js)
+- Mở Command Prompt trong thư mục Client
+- Chạy lệnh npm `install` để cài tất cả dependencies trong tệp package.json
 
-1. Clone the repository to your local machine.
-2. Install the required dependencies.
-3. Configure the necessary settings.
-4. Run the project.
+#### Frontend (React)
+- Mở Command Prompt trong thư mục Server
+- Chạy lệnh `npm install` để cài tất cả dependencies trong tệp package.json
 
-## Usage
+#### Backend (Node.js)
+- Mở Command Prompt trong thư mục Server
+- Chạy lệnh `npm start` để khởi động server
 
-To use this project, follow these guidelines:
-
-1. Open the project in your preferred IDE.
-2. Modify the code according to your requirements.
-3. Run the project to see the results.
-
-## Contributing
-
-Contributions are welcome! If you would like to contribute to this project, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them.
-4. Push your changes to your forked repository.
-5. Submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+#### Frontend (React)
+- Mở Command Prompt trong thư mục Client
+- Chạy lệnh `npm start` để khởi động ứng dụng React 
