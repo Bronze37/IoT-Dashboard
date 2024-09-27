@@ -58,5 +58,5 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 - Sau khi Upload, chương trình sẽ trả về giao diện như hình
 
 <p align="center">
-  <img src="./image/image3.png" alt="Final">
+  <img src="./image/image4.png" alt="Final">
 </p>
