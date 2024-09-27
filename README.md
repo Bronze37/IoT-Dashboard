@@ -23,12 +23,12 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 #### Backend (Node.js)
 
 - Mở Command Prompt trong thư mục Client
-- Chạy lệnh `npm install` để cài tất cả dependencies trong tệp package.json
+- Chạy lệnh `npm install` để cài tất cả dependencies trong tệp `package.json`
 
 #### Frontend (React)
 
 - Mở Command Prompt trong thư mục Server
-- Chạy lệnh `npm install` để cài tất cả dependencies trong tệp package.json
+- Chạy lệnh `npm install` để cài tất cả dependencies trong tệp `package.json`
 
 ### 2. Chạy chương trình:
 
@@ -50,4 +50,13 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 
 <p align="center">
   <img src="./image/image2.png" alt="Client Interface">
+</p>
+
+#### Arduino
+
+- Compile và Upload code Arduino lên ESP32
+- Sau khi Upload, chương trình sẽ trả về giao diện như hình
+
+<p align="center">
+  <img src="./image/image3.png" alt="Final">
 </p>
