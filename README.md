@@ -33,9 +33,14 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 - Sau khi khởi động thì đây là kết quả hiển thị trên Terminal
 
 <p align="center">
-  <img src="./image/image.png" alt="Example Image">
+  <img src="./image/image.png" alt="Terminal Result">
 </p>
 
 #### Frontend (React)
 - Mở Command Prompt trong thư mục Client
-- Chạy lệnh `npm start` để khởi động ứng dụng React 
+- Chạy lệnh `npm start` để khởi động ứng dụng React
+- Sau khi khởi động thì đây là giao diện web nhận được
+
+<p align="center">
+  <img src="./image/image2.png" alt="Client Interface">
+</p>
