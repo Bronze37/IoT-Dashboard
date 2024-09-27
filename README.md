@@ -25,9 +25,13 @@ Dự án này là một hệ thống IoT web cho phép giám sát và điều kh
 - Mở Command Prompt trong thư mục Server
 - Chạy lệnh `npm install` để cài tất cả dependencies trong tệp package.json
 
+### 2. Chạy chương trình:
+
 #### Backend (Node.js)
 - Mở Command Prompt trong thư mục Server
 - Chạy lệnh `npm start` để khởi động server
+- Sau khi khởi động thì đây là kết quả hiển thị trên Terminal
+![alt text](image.png)
 
 #### Frontend (React)
 - Mở Command Prompt trong thư mục Client
